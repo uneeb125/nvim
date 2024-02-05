@@ -29,7 +29,7 @@ keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
+
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
 -- Clear highlights
@@ -37,6 +37,14 @@ keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Close buffers
 keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
+
+-- Save
+keymap("n", "<C-s>", "<cmd>w<CR>", opts)
+keymap("i", "<C-s>", "<cmd>w<CR>", opts)
+keymap("v", "<C-s>", "<cmd>w<CR>", opts)
+
+-- Quit Nvim
+keymap("n", "<C-z>", "<cmd>q!<CR>", opts)
 
 -- Better paste
 keymap("v", "p", "P", opts)
