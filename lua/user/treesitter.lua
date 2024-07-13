@@ -6,7 +6,7 @@ local M = {
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
       event = "VeryLazy",
-      commit = "cb064386e667def1d241317deed9fd1b38f0dc2e",
+      commit = "f1905136b99b5d706858d4c9274a3b152b4359ed",
     },
     {
       "nvim-tree/nvim-web-devicons",

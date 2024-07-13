@@ -1,6 +1,6 @@
 local M = {
   "folke/which-key.nvim",
-  commit = "5224c261825263f46f6771f1b644cae33cd06995",
+  commit = "b695114ddb251185625f61317317a39b67e80643",
   event = "VeryLazy",
 }
 

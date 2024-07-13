@@ -1,12 +1,12 @@
 local M = {
   "neovim/nvim-lspconfig",
-  commit = "0b8165cf95806bc4bb8f745bb0c92021b2ed4b98",
+  commit = "712e4460bc072e80969ae288a97d8851abef5571",
   lazy = false,
   event = { "BufReadPre" },
   dependencies = {
     {
       "hrsh7th/cmp-nvim-lsp",
-      commit = "0e6b2ed705ddcff9738ec4ea838141654f12eeef",
+      commit = "39e2eda76828d88b773cc27a3f61d2ad782c922d",
     },
   },
 }
