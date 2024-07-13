@@ -31,6 +31,7 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers
 
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<S-l>", ":bnext<CR>", opts)
 
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
@@ -45,6 +46,8 @@ keymap("v", "<C-s>", "<cmd>w<CR>", opts)
 
 -- Quit Nvim
 keymap("n", "<C-z>", "<cmd>q!<CR>", opts)
+keymap("i", "<C-z>", "<cmd>q!<CR>", opts)
+keymap("v", "<C-z>", "<cmd>q!<CR>", opts)
 
 -- Better paste
 keymap("v", "p", "P", opts)
@@ -93,4 +96,18 @@ keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", opt
 
 -- Move like sonic
 keymap("n", "<S-j>", "5j", opts)
-keymap("n", "<S-K>", "5k", opts)
+keymap("n", "<S-k>", "5k", opts)
+keymap("v", "<S-j>", "5j", opts)
+keymap("v", "<S-k>", "5k", opts)
+
+
+-- Move in insert mode   
+keymap("i", "<A-j>", "<ESC>ji", opts)
+keymap("i", "<A-k>", "<ESC>ki", opts)
+keymap("i", "<A-h>", "<ESC>hi", opts)
+keymap("i", "<A-l>", "<ESC>li", opts)
+
+
+-- Multicursor
+keymap("n", "<A-m>", "<C-n>", opts)
+keymap("n", "<A-n>", "q", opts)
