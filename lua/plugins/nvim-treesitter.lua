@@ -13,6 +13,7 @@ return {
 
             highlight = {
                 enable = true,
+                disable = { "latex" },
             },
 
             indent = {

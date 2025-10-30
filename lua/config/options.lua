@@ -49,7 +49,8 @@ vim.opt.smartindent = true
 vim.opt.autoindent = true
 
 -- Wrapping
-vim.opt.wrap = false -- Do not wrap lines
+vim.opt.wrap = true -- Wrap long lines
+vim.opt.linebreak = true -- Wrap lines at convenient places (word boundaries)
 vim.opt.breakindent = true -- Preserve indentation on wrapped lines
 vim.opt.whichwrap:append("<,>,[,],h,l") -- Allow specified keys to wrap
 vim.opt.scrolloff = 8 -- Keep 8 lines visible above/below the cursor

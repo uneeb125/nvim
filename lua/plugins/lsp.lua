@@ -25,6 +25,9 @@ return {
 
         -- The `on_attach` function runs each time a language server attaches to a buffer.
         local on_attach = function(client, bufnr)
+            -- Enable completion triggered by <c-x><c-o>
+            vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+
             -- Keymaps for LSP functionality.
             -- Using command strings for fzf-lua calls is crucial for lazy-loading.
             -- This prevents `fzf-lua` from being required until the keymap is actually pressed.
@@ -39,6 +42,7 @@ return {
             map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
             map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
             map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+            map("K", vim.lsp.buf.hover, "Hover Documentation")
 
             -- Highlight references of the word under the cursor.
             if client.supports_method("textDocument/documentHighlight") then
@@ -81,6 +85,7 @@ return {
             bashls = {},
             marksman = {},
             lua_ls = {},
+            texlab = {},
             -- Add more LSPs here...
 
             -- Linters / Formatters
