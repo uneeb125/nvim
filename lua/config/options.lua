@@ -9,6 +9,23 @@ vim.opt.updatetime = 300 -- Faster completion (default is 4000ms)
 vim.opt.completeopt = { "menuone", "noselect" } -- Set completion options, mainly for nvim-cmp
 vim.opt.iskeyword:append("-", '"') -- Treat these characters as part of a word
 
+-- Enable autoread
+vim.o.autoread = true
+
+-- Automatically check for file changes on focus or buffer enter
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+    command = "if mode() != 'c' | checktime | endif",
+    pattern = "*",
+})
+
+-- Periodically check for file changes (every 2 seconds)
+local checktime_interval_ms = 1000
+vim.fn.timer_start(checktime_interval_ms, function()
+    if vim.fn.mode() ~= "c" then
+        vim.cmd("checktime")
+    end
+end, { ["repeat"] = -1 })
+
 -- -----------------------------------------------------------------------------
 -- UI & APPEARANCE
 -- -----------------------------------------------------------------------------
@@ -37,6 +54,16 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- -----------------------------------------------------------------------------
 -- TEXT EDITING & INDENTATION
 -- -----------------------------------------------------------------------------
+-- Set textwidth to the window width on resize
+vim.api.nvim_create_autocmd({ "VimResized", "WinEnter", "BufEnter" }, {
+    pattern = "*",
+    callback = function()
+        vim.opt.textwidth = vim.fn.winwidth(0) - 7
+    end,
+})
+
+vim.opt.formatoptions:append("t")
+
 -- Use spaces instead of tabs
 vim.opt.expandtab = true
 vim.opt.tabstop = 4 -- Number of spaces a <Tab> in the file counts for
@@ -89,3 +116,6 @@ else
     -- In standalone Neovim, the statusline shows the mode, so this is redundant
     vim.opt.showmode = false
 end
+
+-- Set default for format on save to be off
+vim.g.autoformat_on_save = false
