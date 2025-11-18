@@ -1,0 +1,26 @@
+return {}
+-- local M =  {
+--   "lucaSartore/fastspell.nvim",
+--   build = function()
+--     local jslib_path = vim.fn.stdpath("data") .. "/lazy/fastspell.nvim/jslib"
+--     local log_file = "/home/uneeb/.gemini/tmp/d7fa4eee022992649f84902df9396d7c8cfa39f1c38f05e6bf40014eebe89e3a/fastspell_build.log"
+--     local cmd = "cd " .. vim.fn.shellescape(jslib_path) .. " && npm install && npm run build > " .. log_file .. " 2>&1"
+--     vim.system({ cmd })
+--   end,
+--   config = function()
+--     local fastspell = require("fastspell")
+--
+--     fastspell.setup({
+--       cspell_json_file_path = vim.fn.stdpath("config") .. "/cspell.json",
+--     })
+--
+--     vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "BufEnter", "WinScrolled" }, {
+--       callback = function(_)
+--         local first_line = vim.fn.line("w0") - 1
+--         local last_line = vim.fn.line("w$")
+--         fastspell.sendSpellCheckRequest(first_line, last_line)
+--       end,
+--     })
+--   end,
+-- }
+
