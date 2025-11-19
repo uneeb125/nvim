@@ -9,6 +9,18 @@ vim.keymap.set("n", "<leader>cf", function()
     })
 end, { desc = "Format current file" })
 
+vim.keymap.set("n", "<leader>ct", function()
+    if vim.g.autoformat_on_save == nil then
+        vim.g.autoformat_on_save = false
+    end
+    vim.g.autoformat_on_save = not vim.g.autoformat_on_save
+    if vim.g.autoformat_on_save then
+        print("Format on save enabled")
+    else
+        print("Format on save disabled")
+    end
+end, { desc = "Toggle Format on Save" })
+
 -- Map <leader>fp to open projects
 vim.keymap.set("n", "<leader>fp", ":ProjectFzf<CR>", { noremap = true, silent = true })
 
@@ -69,9 +81,9 @@ keymap("i", "<C-s>", "<cmd>w<CR>", opts)
 keymap("v", "<C-s>", "<cmd>w<CR>", opts)
 
 -- Quit Nvim
-keymap("n", "<C-z>", "<cmd>q!<CR>", opts)
-keymap("i", "<C-z>", "<cmd>q!<CR>", opts)
-keymap("v", "<C-z>", "<cmd>q!<CR>", opts)
+keymap("n", "<C-c>", "<cmd>q!<CR>", opts)
+keymap("i", "<C-c>", "<cmd>q!<CR>", opts)
+keymap("v", "<C-c>", "<cmd>q!<CR>", opts)
 
 -- Better paste
 keymap("v", "p", "P", opts)
@@ -91,6 +103,13 @@ keymap("v", "u", "<ESC>", opts)
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
+-- Hard wrap visually selected text
+keymap("v", "<leader>wq", "gq", { desc = "Hard wrap selected text" })
+-- Join visually selected lines
+keymap("v", "<leader>wj", "J", { desc = "Join selected lines" })
+-- Rewrap hardwarp
+keymap("v", "<leader>wt", "JVgq", { desc = "Toggle wrap selected lines" })
+
 -- Plugins --
 
 -- NvimTree
@@ -109,19 +128,66 @@ keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 keymap("n", "<leader>/", "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", opts)
 keymap("x", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", opts)
 
--- DAP
-keymap("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
-keymap("n", "<leader>dc", "<cmd>lua require'dap'.continue()<cr>", opts)
-keymap("n", "<leader>di", "<cmd>lua require'dap'.step_into()<cr>", opts)
-keymap("n", "<leader>do", "<cmd>lua require'dap'.step_over()<cr>", opts)
-keymap("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<cr>", opts)
-keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
-keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
-keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
-keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
+-- -- DAP
+-- keymap("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
+-- keymap("n", "<leader>dc", "<cmd>lua require'dap'.continue()<cr>", opts)
+-- keymap("n", "<leader>di", "<cmd>lua require'dap'.step_into()<cr>", opts)
+-- keymap("n", "<leader>do", "<cmd>lua require'dap'.step_over()<cr>", opts)
+-- keymap("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<cr>", opts)
+-- keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
+-- keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
+-- keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
+-- keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
 
 -- Lsp
 keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", opts)
+keymap("n", "gd", "<cmd>FzfLua lsp_definitions<CR>", { desc = "LSP: Go to Definition" })
+keymap("n", "<leader>rd", function()
+    vim.lsp.buf.execute_command({ command = "rust-analyzer.openDocs" })
+end, { desc = "LSP: Open documentation in browser" })
+keymap("n", "gr", "<cmd>FzfLua lsp_references<CR>", { desc = "LSP: Go to References" })
+keymap("n", "gI", "<cmd>FzfLua lsp_implementations<CR>", { desc = "LSP: Go to Implementation" })
+keymap("n", "<leader>D", "<cmd>FzfLua lsp_type_definitions<CR>", { desc = "LSP: Type Definition" })
+keymap("n", "<leader>ds", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "LSP: Document Symbols" })
+keymap("n", "<leader>ws", "<cmd>FzfLua lsp_workspace_symbols<CR>", { desc = "LSP: Workspace Symbols" })
+-- keymap("n", "<leader>ca", function()
+--     vim.lsp.buf.code_action({ apply = true })
+-- end, { desc = "LSP: Apply First Code Action" })
+
+
+keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code Action Menu" })
+
+keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP: Code Rename" })
+keymap("n", "<leader>di", "<cmd>:lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>", { desc = "LSP: Show inlay" })
+keymap("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Go to Declaration" })
+keymap("n", "go", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation" })
+
+-- LSP Diagnostics
+keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+-- fzf-lua diagnostics
+keymap("n", "<leader>Dl", "<cmd>FzfLua diagnostics_document<CR>", { desc = "List buffer diagnostics (Fzf)" })
+keymap("n", "<leader>Dw", "<cmd>FzfLua diagnostics_workspace<CR>", { desc = "List workspace diagnostics (Fzf)" })
+-- quickfix diagnostics
+keymap("n", "<leader>dl", function() vim.diagnostic.setqflist({ bufnr = 0 }) vim.cmd("copen") end, { desc = "List buffer diagnostics (Quickfix)" })
+keymap("n", "<leader>dw", function() vim.diagnostic.setqflist() vim.cmd("copen") end, { desc = "List workspace diagnostics (Quickfix)" })
+
+
+-- vim.keymap.set("n", "<leader>di", function()
+--     if vim.lsp.inlay_hint.enable == nil then
+--         vim.lsp.inlay_hint.enable = false
+--     end
+--     vim.lsp.inlay_hint.enable = not vim.lsp.inlay_hint.enable
+-- end, { desc = "Toggle Diagnostic Virtual Text" })
+
+vim.keymap.set("n", "<leader>dv", function()
+    if vim.g.diagnostics_virtual_text_enabled == nil then
+        vim.g.diagnostics_virtual_text_enabled = false
+    end
+    vim.g.diagnostics_virtual_text_enabled = not vim.g.diagnostics_virtual_text_enabled
+    vim.diagnostic.config({ virtual_text = vim.g.diagnostics_virtual_text_enabled })
+end, { desc = "Toggle Diagnostic Virtual Text" })
+
 
 -- Move like sonic
 keymap("n", "<S-j>", "5j", opts)
