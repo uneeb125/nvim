@@ -52,6 +52,7 @@ return {
             marksman = {},
             lua_ls = {},
             texlab = {},
+            ltex_plus = {},
             -- Add more LSPs here...
 
             -- Linters / Formatters
@@ -59,14 +60,26 @@ return {
             "prettierd",
         }
 
-        -- Set up mason-lspconfig to automatically attach the servers.
         require("mason-lspconfig").setup({
             handlers = {
                 function(server_name)
-                    require("lspconfig")[server_name].setup({
+                    local server_opts = {
                         on_attach = on_attach,
                         capabilities = capabilities,
-                    })
+                    }
+                    if server_name == "ltex_plus" then
+                        server_opts.on_attach = function(client, bufnr)
+                            on_attach(client, bufnr) -- call original on_attach
+                            require("ltex_extra").setup({ init_check = false })
+                        end
+                        server_opts.debounce_text_changes = 1500
+                        server_opts.settings = {
+                            ltex = {
+                                checkTriggers = "onType",
+                            },
+                        }
+                    end
+                    require("lspconfig")[server_name].setup(server_opts)
                 end,
             },
         })
