@@ -142,12 +142,9 @@ keymap("x", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle.linewise(v
 -- Lsp
 keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", opts)
 keymap("n", "gd", "<cmd>FzfLua lsp_definitions<CR>", { desc = "LSP: Go to Definition" })
-keymap("n", "<leader>rd", function()
-    vim.lsp.buf.execute_command({ command = "rust-analyzer.openDocs" })
-end, { desc = "LSP: Open documentation in browser" })
 keymap("n", "gr", "<cmd>FzfLua lsp_references<CR>", { desc = "LSP: Go to References" })
 keymap("n", "gI", "<cmd>FzfLua lsp_implementations<CR>", { desc = "LSP: Go to Implementation" })
-keymap("n", "<leader>D", "<cmd>FzfLua lsp_type_definitions<CR>", { desc = "LSP: Type Definition" })
+keymap("n", "<leader>ld", "<cmd>FzfLua lsp_type_definitions<CR>", { desc = "LSP: Type Definition" })
 keymap("n", "<leader>ds", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "LSP: Document Symbols" })
 keymap("n", "<leader>ws", "<cmd>FzfLua lsp_workspace_symbols<CR>", { desc = "LSP: Workspace Symbols" })
 -- keymap("n", "<leader>ca", function()
