@@ -4,52 +4,30 @@
 -- Ensure the leader key is set to space for these keymaps.
 vim.g.mapleader = " "
 
-local keymap = vim.keymap.set
-local opts = { silent = true, buffer = true }
+-- Define a helper function for creating buffer-local keymaps.
+local map = function(keys, func, desc)
+    vim.keymap.set("n", keys, func, { buffer = true, silent = true, desc = "Rust LSP: " .. desc })
+end
 
--- Rustacean.nvim specific keymaps
-keymap("n", "<leader>ra", function()
-    vim.cmd.RustLsp("codeAction")
-end, { desc = "Rust Code Action", buffer = true, silent = true })
-keymap("n", "<leader>rr", function()
-    vim.cmd.RustLsp("runnables")
-end, { desc = "Rust Runnables", buffer = true, silent = true })
-keymap("n", "<leader>rt", function()
-    vim.cmd.RustLsp("testables")
-end, { desc = "Rust Testables", buffer = true, silent = true })
-keymap("n", "<leader>rd", function()
-    vim.cmd.RustLsp("debuggables")
-end, { desc = "Rust Debuggables", buffer = true, silent = true })
-keymap("n", "<leader>re", function()
-    vim.cmd.RustLsp("expandMacro")
-end, { desc = "Rust Expand Macro", buffer = true, silent = true })
-keymap("n", "<leader>rc", function()
-    vim.cmd.RustLsp("openCargo")
-end, { desc = "Rust Open Cargo.toml", buffer = true, silent = true })
-keymap("n", "<leader>rn", function()
-    vim.lsp.buf.rename()
-end, { desc = "Rust Rename", buffer = true, silent = true })
+-- LSP navigation with fzf-lua
+map("gd", "<cmd>FzfLua lsp_definitions<CR>", "[G]oto [D]efinition")
+map("gr", "<cmd>FzfLua lsp_references<CR>", "[G]oto [R]eferences")
+map("gi", "<cmd>FzfLua lsp_implementations<CR>", "[G]oto [I]mplementation")
+map("<leader>D", "<cmd>FzfLua lsp_type_definitions<CR>", "Type [D]efinition")
+map("<leader>ds", "<cmd>FzfLua lsp_document_symbols<CR>", "[D]ocument [S]ymbols")
+map("<leader>ws", "<cmd>FzfLua lsp_workspace_symbols<CR>", "[W]orkspace [S]ymbols")
+map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
--- Override K to use rustaceanvim's hover actions, which are more powerful.
-keymap("n", "gk", function()
-    vim.cmd.RustLsp({ "hover", "actions" })
-end, { desc = "Rust Hover Actions", buffer = true, silent = true })
+-- Rustacean.nvim specific keymaps & other actions
+map("<leader>ra", function() vim.cmd.RustLsp("codeAction") end, "[R]ust [A]ction")
+map("<leader>rr", function() vim.cmd.RustLsp("runnables") end, "[R]ust [R]unnables")
+map("<leader>rt", function() vim.cmd.RustLsp("testables") end, "[R]ust [T]estables")
+map("<leader>rd", function() vim.cmd.RustLsp("openDocs") end, "[R]ust [D]ocs")
+-- map("<leader>rd", function() vim.cmd.RustLsp("debuggables") end, "[R]ust [D]ebuggables")
+map("<leader>re", function() vim.cmd.RustLsp("expandMacro") end, "[R]ust [E]xpand Macro")
+map("<leader>rc", function() vim.cmd.RustLsp("openCargo") end, "[R]ust [C]argo.toml")
+map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
+map("<leader>rs", vim.lsp.buf.signature_help, "[R]ust [S]ignature Help")
 
--- Standard LSP keymaps for Rust files
-keymap("n", "gd", function()
-    vim.lsp.buf.definition()
-end, { desc = "Go to Definition", buffer = true, silent = true })
-keymap("n", "gr", function()
-    vim.lsp.buf.references()
-end, { desc = "Go to References", buffer = true, silent = true })
-keymap("n", "gD", function()
-    vim.lsp.buf.declaration()
-end, { desc = "Go to Declaration", buffer = true, silent = true })
-keymap("n", "gi", function()
-    vim.lsp.buf.implementation()
-end, { desc = "Go to Implementation", buffer = true, silent = true })
-keymap("n", "<leader>rs", function()
-    vim.lsp.buf.signature_help()
-end, { desc = "Rust Signature Help", buffer = true, silent = true })
-
--- You can add more keymaps here as you discover more features you use often.
+-- Override gk to use rustaceanvim's hover actions, which are more powerful.
+map("gk", function() vim.cmd.RustLsp({ "hover", "actions" }) end, "Hover Actions")
