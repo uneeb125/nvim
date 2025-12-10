@@ -1,3 +1,4 @@
+local cmp = require("cmp")
 vim.keymap.set("n", "-", "<cmd>Oil --float<CR>", { desc = "Open Parent Directory in Oil" })
 vim.keymap.set("n", "gl", function()
     vim.diagnostic.open_float()
@@ -96,6 +97,7 @@ keymap("v", "p", "P", opts)
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "kj", "<ESC>", opts)
+keymap("i", "<A-o>", "cmp.mapping.abort()", opts)
 keymap("v", "u", "<ESC>", opts)
 
 -- Visual --

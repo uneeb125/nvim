@@ -4,7 +4,7 @@
 vim.opt.shada = { "!", "'1000", "<50", "s10", "h", "f1000" }
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard
 vim.opt.mouse = "a" -- Enable mouse support in all modes
-vim.opt.timeoutlen = 500 -- Time in ms to wait for a mapped sequence
+vim.opt.timeoutlen = 200 -- Time in ms to wait for a mapped sequence
 vim.opt.updatetime = 300 -- Faster completion (default is 4000ms)
 vim.opt.completeopt = { "menuone", "noselect" } -- Set completion options, mainly for nvim-cmp
 vim.opt.iskeyword:append("-", '"') -- Treat these characters as part of a word
