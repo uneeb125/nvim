@@ -22,16 +22,22 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
-        keymap = {
+    keymap = {
             preset = "default",
             ["<Tab>"] = { "accept", "fallback" },
+            ["<C-space>"] = {},
+            ["<C-s>"] = { "show", "show_signature", "hide_signature" },
+            ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
+            ["<C-e>"] = { "hide", "show" },
         },
-
         appearance = {
             nerd_font_variant = "mono",
         },
 
-        completion = { documentation = { auto_show = true } },
+        completion = { 
+            documentation = { auto_show = true },
+            ghost_text = { enabled = true }
+        },
         signature = { enabled = true },
 
         sources = {
