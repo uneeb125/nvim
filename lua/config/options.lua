@@ -9,6 +9,9 @@ vim.opt.updatetime = 300 -- Faster completion (default is 4000ms)
 vim.opt.completeopt = { "menuone", "noselect" } -- Set completion options, mainly for nvim-cmp
 vim.opt.iskeyword:append("-", '"') -- Treat these characters as part of a word
 
+-- Disable built-in snippet parser to use LuaSnip
+vim.g.loaded_snippets = 1
+
 -- Enable autoread
 vim.o.autoread = true
 

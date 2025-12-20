@@ -44,6 +44,8 @@ return {
 
         -- Get LSP capabilities from blink.cmp.
         local capabilities = require("blink.cmp").get_lsp_capabilities()
+        -- Enable LSP snippet support (blink.cmp will use LuaSnip to expand them)
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
 
         -- Define the list of LSP servers and tools you want to use.
         local servers = {

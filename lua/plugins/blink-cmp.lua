@@ -24,7 +24,7 @@ return {
     opts = {
     keymap = {
             preset = "default",
-            ["<Tab>"] = { "accept", "fallback" },
+            ["<Tab>"] = { "accept" },
             ["<C-space>"] = {},
             ["<C-s>"] = { "show", "show_signature", "hide_signature" },
             ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
@@ -64,6 +64,7 @@ return {
             },
         },
 
+        snippets = { preset = "luasnip", score_offset = -5 },
         fuzzy = { implementation = "prefer_rust_with_warning" },
     },
 
