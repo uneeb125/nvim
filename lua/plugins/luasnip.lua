@@ -31,7 +31,7 @@ return {
     end
 
     -- Keymaps
-    vim.keymap.set({ "i", "s", "n" }, "<Tab>", function()
+    vim.keymap.set({ "n", "s" }, "<Tab>", function()
       -- If completion menu is visible, let blink.cmp handle it
       if vim.fn.pumvisible() == 1 then
         return "<Tab>"
@@ -42,23 +42,24 @@ return {
       end
       
       -- Try to expand or jump forward
-      local ok, result = pcall(function()
-        if ls.expand_or_jumpable() then
-          ls.expand_or_jump()
-          return true
-        end
-        return false
+      local ok, jumpable = pcall(function()
+        return ls.expand_or_jumpable()
       end)
       
-      if ok and result then
-        return
+      if ok and jumpable then
+        local success = pcall(function()
+          ls.expand_or_jump()
+        end)
+        if success then
+          return ""
+        end
       end
       
       -- Not expandable or jumpable
       return "<Tab>"
-    end, { expr = true, silent = true })
+    end, { expr = true })
 
-    vim.keymap.set({ "i", "s", "n" }, "<S-Tab>", function()
+    vim.keymap.set({ "n", "s" }, "<S-Tab>", function()
       -- If completion menu is visible, let blink.cmp handle navigation
       if vim.fn.pumvisible() == 1 then
         return "<S-Tab>"

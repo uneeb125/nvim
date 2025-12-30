@@ -24,7 +24,7 @@ return {
     opts = {
     keymap = {
             preset = "default",
-            ["<Tab>"] = { "accept" },
+            ["<Tab>"] = { "accept", "fallback" },
             ["<C-space>"] = {},
             ["<C-s>"] = { "show", "show_signature", "hide_signature" },
             ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
