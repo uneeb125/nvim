@@ -32,15 +32,56 @@ return {
         { "<leader><leader>", "<cmd>FzfLua buffers<CR>", desc = "Find Buffers" },
         { "<leader>/", "<cmd>FzfLua lgrep_curbuf<CR>", desc = "Grep Current Buffer" },
 
-        -- This is a special case. Because it uses a dynamic path from a `vim.fn` call,
-        -- keeping it as a function is the cleanest solution. The plugin will already be
-        -- loaded by any of the other keypresses, so this has no performance penalty.
+        -- Find in Config
         {
             "<leader>fc",
             function()
                 require("fzf-lua").files({ cwd = vim.fn.stdpath("config") })
             end,
             desc = "Find in Config",
+        },
+
+        -- Find and insert templates
+        {
+            "<leader>ft",
+            function()
+                local fzf_lua = require("fzf-lua")
+                local template = require("template")
+                local current_filetype = vim.bo.filetype
+
+                local template_list = template.get_temp_list()
+
+                if not template_list or vim.tbl_isempty(template_list) then
+                    vim.notify("No templates found in: " .. template.temp_dir, vim.log.levels.WARN)
+                    return
+                end
+
+                if not template_list[current_filetype] then
+                    vim.notify("No templates found for filetype: " .. current_filetype, vim.log.levels.WARN)
+                    vim.notify("Available filetypes: " .. table.concat(vim.tbl_keys(template_list), ", "), vim.log.levels.INFO)
+                    return
+                end
+
+                fzf_lua.fzf_exec(template_list[current_filetype], {
+                    prompt = string.format("Templates [%s]> ", current_filetype),
+                    previewer = "builtin",
+                    fn_transform = function(x)
+                        local rel_path = vim.fn.fnamemodify(x, ":.")
+                        return rel_path:gsub("^templates/", "")
+                    end,
+                    actions = {
+                        ["default"] = function(selected)
+                            if not selected or #selected == 0 then
+                                return
+                            end
+                            local template_file = selected[1]
+                            local template_name_only = vim.fn.fnamemodify(template_file, ":t:r")
+                            vim.cmd("Template " .. template_name_only)
+                        end,
+                    },
+                })
+            end,
+            desc = "Find Templates",
         },
     },
 }

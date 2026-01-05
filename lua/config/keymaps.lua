@@ -207,6 +207,11 @@ keymap("i", "<A-k>", "<ESC>ki", opts)
 keymap("i", "<A-h>", "<ESC>hi", opts)
 keymap("i", "<A-l>", "<ESC>li", opts)
 
--- Multicursor
-keymap("n", "<A-m>", "<C-n>", opts)
-keymap("n", "<A-n>", "q", opts)
+-- -- Multicursor
+-- keymap("n", "<A-m>", "<C-n>", opts)
+-- keymap("n", "<A-n>", "q", opts)
+
+-- Template
+vim.keymap.set("n", "<leader>tt", function()
+    vim.fn.feedkeys(":Template ")
+end, { remap = true, desc = "Insert Template" })
