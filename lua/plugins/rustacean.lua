@@ -47,7 +47,14 @@ return {
           ['rust-analyzer'] = {
             cargo = { allFeatures = true },
             checkOnSave = false,
-            procMacro = { enable = true },
+            procMacro = { enable = true},
+              -- enable = true,  -- Keep enabled so it tries (even if it fails silently)
+              -- ignored = {
+              --   ["*"] = { "*" }, 
+              -- },
+            rustc = {
+              source = "discover",
+            },
           },
         },
         
