@@ -47,8 +47,6 @@ require("lazy").setup({
             -- Neovim has to search when looking for files.
             disabled_plugins = {
                 "gzip",
-                "matchit",
-                "matchparen",
                 "netrwPlugin",
                 "tarPlugin",
                 "tohtml",
