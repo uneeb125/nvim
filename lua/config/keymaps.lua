@@ -145,6 +145,7 @@ keymap("x", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle.linewise(v
 keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", opts)
 keymap("n", "gd", "<cmd>FzfLua lsp_definitions<CR>", { desc = "LSP: Go to Definition" })
 keymap("n", "gr", "<cmd>FzfLua lsp_references<CR>", { desc = "LSP: Go to References" })
+keymap("n", "gR", "<cmd>FzfLua lsp_references<CR>", { desc = "LSP: Go to References (FzfLua)" })
 keymap("n", "gI", "<cmd>FzfLua lsp_implementations<CR>", { desc = "LSP: Go to Implementation" })
 keymap("n", "<leader>ld", "<cmd>FzfLua lsp_type_definitions<CR>", { desc = "LSP: Type Definition" })
 keymap("n", "<leader>ds", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "LSP: Document Symbols" })

@@ -89,6 +89,8 @@ return {
           map("<leader>rd", function() vim.cmd.RustLsp("openDocs") end, "[R]ust [D]ocs")
           map("<leader>re", function() vim.cmd.RustLsp("expandMacro") end, "[R]ust [E]xpand Macro")
           map("<leader>rc", function() vim.cmd.RustLsp("openCargo") end, "[R]ust [C]argo.toml")
+
+          map("<leader>rk", vim.lsp.buf.hover, "[K] Hover/Type Tooltip")
           
           -- Standard LSP helpers
           map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
