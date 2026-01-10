@@ -72,6 +72,10 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4 -- Number of spaces a <Tab> in the file counts for
 vim.opt.shiftwidth = 4 -- Number of spaces to use for autoindent
 vim.opt.softtabstop = 4 -- Number of spaces <Tab> inserts
+vim.opt.foldcolumn = '1'
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
 vim.opt.foldopen:remove("hor")
 
 -- Smart indentation

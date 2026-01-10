@@ -55,6 +55,9 @@ return {
             rustc = {
               source = "discover",
             },
+            folding = {
+              ranges = true,
+            },
           },
         },
         
