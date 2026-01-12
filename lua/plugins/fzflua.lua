@@ -62,6 +62,56 @@ return {
                     return
                 end
 
+                local function process_and_insert_template(selected)
+                    local filepath = selected[1]
+                    local lines = vim.fn.readfile(filepath)
+
+                    if lines[1] and lines[1]:match("^;;") then
+                        table.remove(lines, 1)
+                    end
+
+                    local content = table.concat(lines, "\n")
+
+                    content = content:gsub("{{_lua:(.-)_}}", function(lua_code)
+                        local func = loadstring("return " .. lua_code)
+                        if func then
+                            local ok, res = pcall(func)
+                            if ok then return tostring(res) end
+                        end
+                        return ""
+                    end)
+
+                    local replacements = {
+                        ["{{_date_}}"] = os.date("%Y-%m-%d %H:%M:%S"),
+                        ["{{_file_name_}}"] = vim.fn.expand("%:t:r"),
+                        ["{{_author_}}"] = template.author or "",
+                        ["{{_email_}}"] = template.email or "",
+                        ["{{_variable_}}"] = vim.fn.input("Variable name: ", ""),
+                        ["{{_upper_file_}}"] = string.upper(vim.fn.expand("%:t:r")),
+                    }
+
+                    for key, value in pairs(replacements) do
+                        content = content:gsub(key, value)
+                    end
+
+                    local cursor_line = 0
+                    local line_num = 0
+                    content = content:gsub("{{_cursor_}}", function()
+                        cursor_line = line_num + 1
+                        return ""
+                    end)
+
+                    local buf_lines = vim.split(content, "\n")
+                    local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+                    local start_line = cur_line == 1 and #vim.api.nvim_get_current_line() == 0 and cur_line - 1 or cur_line
+                    vim.api.nvim_buf_set_lines(0, start_line, cur_line, false, buf_lines)
+
+                    if cursor_line > 0 then
+                        vim.api.nvim_win_set_cursor(0, { start_line + cursor_line, 0 })
+                        vim.cmd("startinsert!")
+                    end
+                end
+
                 fzf_lua.fzf_exec(template_list[current_filetype], {
                     prompt = string.format("Templates [%s]> ", current_filetype),
                     previewer = "builtin",
@@ -74,9 +124,7 @@ return {
                             if not selected or #selected == 0 then
                                 return
                             end
-                            local template_file = selected[1]
-                            local template_name_only = vim.fn.fnamemodify(template_file, ":t:r")
-                            vim.cmd("Template " .. template_name_only)
+                            process_and_insert_template(selected)
                         end,
                     },
                 })

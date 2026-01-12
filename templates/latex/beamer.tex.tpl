@@ -1,3 +1,4 @@
+;; tex
 % Created by {{_author_}} on {{_date_}}
 \documentclass[aspectratio=169]{beamer}
 

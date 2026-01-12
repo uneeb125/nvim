@@ -1,3 +1,4 @@
+;; rust
 // Created by {{_author_}} on {{_date_}}
 //! {{_file_name_}} - Rust binary
 

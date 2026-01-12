@@ -89,6 +89,35 @@ keymap("v", "<C-c>", "<cmd>q!<CR>", opts)
 -- Better paste
 keymap("v", "p", "P", opts)
 
+
+-- Copy range
+keymap("v", "<leader>L", function()
+  local file = vim.fn.expand("%")
+  
+  -- Get the start of the visual selection and the current cursor position
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+
+  -- If the user selected upwards, swap the numbers so start is always smaller
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+
+  -- Format as "file:start-end" (or just "file:line" if single line)
+  local result
+  if start_line == end_line then
+    result = string.format("%s:%d", file, start_line)
+  else
+    result = string.format("%s:%d-%d", file, start_line, end_line)
+  end
+
+  vim.fn.setreg("+", result)
+  vim.notify("Copied: " .. result)
+  
+  -- Optional: Exit visual mode after copying
+  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+end, { desc = "Copy line range reference to clipboard" })
+
 -- Wrap nav
 -- keymap("n", "j", "gj", opts)
 -- keymap("n", "k", "gk", opts)
