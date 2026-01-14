@@ -6,7 +6,7 @@ return {
             require("template").setup({
                 temp_dir = vim.fn.expand("~/.config/nvim/templates"),
                 author = "uneeb",
-                email = "",
+                email = "uneebkamal125.com",
             })
         end,
     },
