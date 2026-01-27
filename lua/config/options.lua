@@ -32,6 +32,7 @@ end, { ["repeat"] = -1 })
 -- -----------------------------------------------------------------------------
 -- UI & APPEARANCE
 -- -----------------------------------------------------------------------------
+vim.g.snacks_animate = true
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
 vim.opt.cmdheight = 1 -- More space for messages
 vim.opt.pumheight = 10 -- Pop-up menu height
