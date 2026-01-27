@@ -1,5 +1,6 @@
 return {
     "goolord/alpha-nvim",
+    enabled = false,
 
     -- `VimEnter` is the correct event for a dashboard. It ensures the dashboard
     -- only appears after Neovim has fully initialized, but only on startup
