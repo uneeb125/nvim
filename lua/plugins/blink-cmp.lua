@@ -16,6 +16,7 @@ return {
         "rafamadriz/friendly-snippets",
         "moyiz/blink-emoji.nvim",
         "ray-x/cmp-sql",
+        "micangl/cmp-vimtex",
     },
 
     -- The configuration for blink.cmp goes directly in the `opts` table.
@@ -41,7 +42,7 @@ return {
         signature = { enabled = true },
 
         sources = {
-            default = { "lsp", "path", "snippets", "buffer", "emoji", "sql" },
+            default = { "lsp", "path", "snippets", "buffer", "emoji", "sql", "vimtex" },
             providers = {
                 emoji = {
                     module = "blink-emoji",
@@ -59,6 +60,15 @@ return {
                     opts = {},
                     should_show_items = function()
                         return vim.tbl_contains({ "sql" }, vim.o.filetype)
+                    end,
+                },
+                vimtex = {
+                    name = "vimtex",
+                    module = "blink.compat.source",
+                    score_offset = 5,
+                    opts = {},
+                    should_show_items = function()
+                        return vim.tbl_contains({ "tex", "plaintex" }, vim.o.filetype)
                     end,
                 },
             },

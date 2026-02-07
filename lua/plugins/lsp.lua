@@ -81,6 +81,15 @@ return {
                             },
                         }
                     end
+                    if server_name == "texlab" then
+                        server_opts.settings = {
+                            texlab = {
+                                experimental = {
+                                    mathEnvironments = { "equation", "align", "gather", "multline", "flalign" },
+                                },
+                            },
+                        }
+                    end
                     require("lspconfig")[server_name].setup(server_opts)
                 end,
             },
