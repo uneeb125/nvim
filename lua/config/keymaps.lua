@@ -143,8 +143,7 @@ keymap("v", "<leader>wt", "JVgq", { desc = "Toggle wrap selected lines" })
 
 -- Plugins --
 
--- NvimTree
-keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
+keymap("n", "<leader>e", function() Snacks.explorer() end, { desc = "Explorer" })
 
 -- -- Telescope
 -- keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
