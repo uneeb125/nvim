@@ -1,217 +1,152 @@
 return {
-  "sudo-tee/opencode.nvim", -- CHANGED: Pointing to the correct repository for this config!
-  dependencies = {
-    { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
-  },
-  -- 'opts' is the lazy.nvim standard way to pass options to the setup() function
-  opts = {
-    preferred_picker = "fzf", 
-    preferred_completion = "blink", 
-    default_global_keymaps = true, 
-    default_mode = 'build', 
-    default_system_prompt = nil, 
-    keymap_prefix = '<leader>o', 
-    opencode_executable = 'opencode', 
+    "sudo-tee/opencode.nvim",
+    dependencies = {
+        { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
+    },
+    opts = {
+        preferred_picker = "fzf",
+        preferred_completion = "blink",
+        default_global_keymaps = true,
+        default_mode = "build",
+        keymap_prefix = "<leader>o",
+        opencode_executable = "opencode",
 
-    -- Server configuration for custom/external opencode servers
-    server = {
-      url = nil,             
-      port = nil,            
-      timeout = 5,           
-      spawn_command = nil,   
-      auto_kill = true,      
-      path_map = nil,        
+        server = {
+            url = nil,
+            port = nil,
+            timeout = 5,
+            auto_kill = true,
+        },
+
+        keymap = {
+            editor = {
+                ["<leader>og"] = { "toggle", desc = "Toggle Opencode" },
+                ["<leader>oi"] = { "open_input", desc = "Open input" },
+                ["<leader>oI"] = { "open_input_new_session", desc = "New session" },
+                ["<leader>oo"] = { "open_output", desc = "Open output" },
+                ["<leader>ot"] = { "toggle_focus", desc = "Toggle focus" },
+                ["<leader>oT"] = { "timeline", desc = "Timeline picker" },
+                ["<leader>oq"] = { "close", desc = "Close UI windows" },
+                ["<leader>os"] = { "select_session", desc = "Select session" },
+                ["<leader>oR"] = { "rename_session", desc = "Rename session" },
+                ["<leader>op"] = { "configure_provider", desc = "Configure provider" },
+                ["<leader>oV"] = { "configure_variant", desc = "Configure variant" },
+                ["<leader>oy"] = { "add_visual_selection", mode = { "v" }, desc = "Add visual selection" },
+                ["<leader>oY"] = { "add_visual_selection_inline", mode = { "v" }, desc = "Add selection inline" },
+                ["<leader>oz"] = { "toggle_zoom", desc = "Toggle zoom" },
+                ["<leader>ov"] = { "paste_image", desc = "Paste image" },
+                ["<leader>ox"] = { "swap_position", desc = "Swap position" },
+                ["<leader>o/"] = { "quick_chat", mode = { "n", "x" }, desc = "Quick chat" },
+
+                ["<leader>od"] = false,
+                ["<leader>odo"] = { "diff_open", desc = "Open Diff" },
+                ["<leader>od]"] = { "diff_next", desc = "Next file diff" },
+                ["<leader>od["] = { "diff_prev", desc = "Prev file diff" },
+                ["<leader>odc"] = { "diff_close", desc = "Close diff view" },
+
+                ["<leader>orr"] = false,
+                ["<leader>ora"] = { "diff_revert_all_last_prompt", desc = "Revert all (last prompt)" },
+                ["<leader>ort"] = { "diff_revert_this_last_prompt", desc = "Revert this (last prompt)" },
+            },
+            input_window = {
+                ["<S-cr>"] = { "submit_input_prompt", mode = { "n", "i" }, desc = "Submit prompt" },
+                ["<esc>"] = { "close", defer_to_completion = true, desc = "Close UI" },
+                ["<C-c>"] = { "cancel", defer_to_completion = true, desc = "Cancel request" },
+                ["<tab>"] = { "toggle_pane", mode = { "n", "i" }, defer_to_completion = true, desc = "Toggle pane" },
+            },
+            output_window = {
+                ["<esc>"] = { "close", desc = "Close UI" },
+                ["<C-c>"] = { "cancel", desc = "Cancel request" },
+                ["]]"] = { "next_message", desc = "Next message" },
+                ["[["] = { "prev_message", desc = "Prev message" },
+                ["i"] = { "focus_input", "n", desc = "Focus input" },
+            },
+        },
+
+        ui = {
+            enable_treesitter_markdown = true,
+            position = "right",
+            persist_state = true,
+            icons = { preset = "nerdfonts" },
+            output = { filetype = "opencode_output" },
+        },
+
+        hooks = {
+            on_file_edited = function(file_path)
+                if type(file_path) == "string" and file_path ~= "" then
+                    vim.schedule(function()
+                        -- Automated edits still open in tabs for visualization
+                        vim.cmd("tabedit " .. vim.fn.fnameescape(file_path))
+                        pcall(function()
+                            vim.cmd("normal! `]")
+                            vim.cmd("normal! zz")
+                        end)
+                    end)
+                end
+            end,
+        },
     },
 
-    keymap = {
-      editor = {
-        ['<leader>og'] = { 'toggle' }, 
-        ['<leader>oi'] = { 'open_input' },['<leader>oI'] = { 'open_input_new_session' },['<leader>oo'] = { 'open_output' }, 
-        ['<leader>ot'] = { 'toggle_focus' }, 
-        ['<leader>oT'] = { 'timeline' },['<leader>oq'] = { 'close' }, 
-        ['<leader>os'] = { 'select_session' }, 
-        ['<leader>oR'] = { 'rename_session' }, 
-        ['<leader>op'] = { 'configure_provider' }, 
-        ['<leader>oV'] = { 'configure_variant' }, 
-        ['<leader>oy'] = { 'add_visual_selection', mode = {'v'} },
-        ['<leader>oY'] = { 'add_visual_selection_inline', mode = {'v'} }, 
-        ['<leader>oz'] = { 'toggle_zoom' }, 
-        ['<leader>ov'] = { 'paste_image'},['<leader>od'] = { 'diff_open' }, 
-        ['<leader>o]'] = { 'diff_next' }, 
-        ['<leader>o['] = { 'diff_prev' }, 
-        ['<leader>oc'] = { 'diff_close' },['<leader>ora'] = { 'diff_revert_all_last_prompt' },['<leader>ort'] = { 'diff_revert_this_last_prompt' },['<leader>orA'] = { 'diff_revert_all' }, 
-        ['<leader>orT'] = { 'diff_revert_this' }, 
-        ['<leader>orr'] = { 'diff_restore_snapshot_file' }, 
-        ['<leader>orR'] = { 'diff_restore_snapshot_all' }, 
-        ['<leader>ox'] = { 'swap_position' }, 
-        ['<leader>ott'] = { 'toggle_tool_output' },['<leader>otr'] = { 'toggle_reasoning_output' }, 
-        ['<leader>o/'] = { 'quick_chat', mode = { 'n', 'x' } }, 
-      },
-      input_window = {
-        ['<S-cr>'] = { 'submit_input_prompt', mode = { 'n', 'i' } }, 
-        ['<esc>'] = { 'close', defer_to_completion = true }, 
-        ['<C-c>'] = { 'cancel', defer_to_completion = true }, 
-        ['~'] = { 'mention_file', mode = 'i' }, 
-        ['@'] = { 'mention', mode = 'i' }, 
-        ['/'] = { 'slash_commands', mode = 'i' }, 
-        ['#'] = { 'context_items', mode = 'i' }, 
-        ['<M-v>'] = { 'paste_image', mode = 'i' }, 
-        ['<tab>'] = { 'toggle_pane', mode = { 'n', 'i' }, defer_to_completion = true }, 
-        ['<up>'] = { 'prev_prompt_history', mode = { 'n', 'i' }, defer_to_completion = true }, 
-        ['<down>'] = { 'next_prompt_history', mode = { 'n', 'i' }, defer_to_completion = true }, 
-        ['<M-m>'] = { 'switch_mode' }, 
-        ['<M-r>'] = { 'cycle_variant', mode = { 'n', 'i' } }, 
-      },
-      output_window = {
-        ['<esc>'] = { 'close' }, 
-        ['<C-c>'] = { 'cancel' }, 
-        [']]'] = { 'next_message' }, 
-        ['[['] = { 'prev_message' }, 
-        ['<tab>'] = { 'toggle_pane', mode = { 'n', 'i' } }, 
-        ['i'] = { 'focus_input', 'n' }, 
-        ['<M-r>'] = { 'cycle_variant', mode = { 'n' } }, 
-        ['<leader>oS'] = { 'select_child_session' }, 
-        ['<leader>oD'] = { 'debug_message' },['<leader>oO'] = { 'debug_output' }, 
-        ['<leader>ods'] = { 'debug_session' }, 
-      },
-      session_picker = {
-        rename_session = { '<C-r>' }, 
-        delete_session = { '<C-d>' }, 
-        new_session = { '<C-s>' }, 
-      },
-      timeline_picker = {
-        undo = { '<C-u>', mode = { 'i', 'n' } }, 
-        fork = { '<C-f>', mode = { 'i', 'n' } }, 
-      },
-      history_picker = {
-        delete_entry = { '<C-d>', mode = { 'i', 'n' } }, 
-        clear_all = { '<C-X>', mode = { 'i', 'n' } }, 
-      },
-      model_picker = {
-        toggle_favorite = { '<C-f>', mode = { 'i', 'n' } },
-      },
-      mcp_picker = {
-        toggle_connection = { '<C-t>', mode = { 'i', 'n' } }, 
-      },
-    },
-    ui = {
-      enable_treesitter_markdown = true, 
-      position = 'right', 
-      input_position = 'bottom', 
-      window_width = 0.40, 
-      zoom_width = 0.8, 
-      display_model = true, 
-      display_context_size = true, 
-      display_cost = true, 
-      window_highlight = 'Normal:OpencodeBackground,FloatBorder:OpencodeBorder', 
-      persist_state = true, 
-      icons = {
-        preset = 'nerdfonts', 
-        overrides = {}, 
-      },
-      questions = {
-        use_vim_ui_select = false, 
-      },
-      output = {
-        filetype = 'opencode_output', 
-        tools = {
-          show_output = true, 
-          show_reasoning_output = true, 
-        },
-        rendering = {
-          markdown_debounce_ms = 250, 
-          on_data_rendered = nil, 
-        },
-      },
-      input = {
-        min_height = 0.10, 
-        max_height = 0.25, 
-        text = {
-          wrap = false, 
-        },
-        auto_hide = false,
-      },
-      picker = {
-        snacks_layout = nil 
-      },
-      completion = {
-        file_sources = {
-          enabled = true,
-          preferred_cli_tool = 'server', 
-          ignore_patterns = {
-            '^%.git/', '^%.svn/', '^%.hg/', 'node_modules/', '%.pyc$', '%.o$',
-            '%.obj$', '%.exe$', '%.dll$', '%.so$', '%.dylib$', '%.class$',
-            '%.jar$', '%.war$', '%.ear$', 'target/', 'build/', 'dist/',
-            'out/', 'deps/', '%.tmp$', '%.temp$', '%.log$', '%.cache$',
-          },
-          max_files = 10,
-          max_display_length = 50, 
-        },
-      },
-    },
-    context = {
-      enabled = true, 
-      cursor_data = {
-        enabled = false, 
-        context_lines = 5, 
-      },
-      diagnostics = {
-        info = false, 
-        warning = true, 
-        error = true, 
-        only_closest = false, 
-      },
-      current_file = {
-        enabled = true, 
-        show_full_path = true,
-      },
-      files = {
-        enabled = true,
-        show_full_path = true,
-      },
-      selection = {
-        enabled = true, 
-      },
-      buffer = {
-        enabled = false, 
-      },
-      git_diff = {
-        enabled = false,
-      },
-    },
-    logging = {
-      enabled = false,
-      level = 'warn', 
-      outfile = nil,
-    },
-    debug = {
-      enabled = false, 
-      capture_streamed_events = false,
-      show_ids = true,
-      quick_chat = {
-        keep_session = false, 
-        set_active_session = false,
-      },
-    },
-    prompt_guard = nil, 
+    config = function(_, opts)
+        vim.o.autoread = true
+        require("opencode").setup(opts)
 
-    hooks = {
-      on_file_edited = nil, 
-      on_session_loaded = nil, 
-      on_done_thinking = nil, 
-      on_permission_requested = nil, 
-    },
-    quick_chat = {
-      default_model = nil,   
-      default_agent = nil, 
-      instructions = nil, 
-    },
-  },
-  
-  config = function(_, opts)
-    vim.o.autoread = true
+        -- 1. Revert Keymap (Focus stays locked to code)
+        vim.keymap.set("n", "<leader>orr", function()
+            local current_win = vim.api.nvim_get_current_win()
+            require("opencode.api").diff_revert_this_last_prompt()
+            vim.schedule(function()
+                if vim.api.nvim_win_is_valid(current_win) then
+                    vim.api.nvim_set_current_win(current_win)
+                end
+            end)
+        end, { desc = "Instantly Revert AI edit" })
 
-    -- This setup function belongs to sudo-tee/opencode.nvim and will now run successfully!
-    require("opencode").setup(opts)
-  end,
+        -- 2. UNIVERSAL SMART JUMP: Opens as Buffer or Tab
+        local function smart_jump(target)
+            local line = vim.api.nvim_get_current_line()
+
+            -- Regex to find filenames in chat history
+            local file = line:match("%*%*%w+%*%*%s+'([^']+)'") or line:match("`([^`]+)`") or line:match("'([^']+)'")
+
+            if file and file ~= "" and not file:match("[%[%]%(%)]") then
+                if target == "tab" then
+                    -- Open in new tab
+                    vim.cmd("tabedit " .. vim.fn.fnameescape(file))
+                else
+                    -- JUMP TO EDITOR: Use the plugin API to move focus out of the locked chat window
+                    require("opencode.api").toggle_focus()
+
+                    -- Now we are in the editor window, open the buffer
+                    vim.cmd("edit " .. vim.fn.fnameescape(file))
+                end
+                vim.cmd("normal! zz")
+                return
+            end
+
+            -- Fallback if no file found
+            local key_code = (target == "tab") and "O" or "<CR>"
+            local key = vim.api.nvim_replace_termcodes(key_code, true, false, true)
+            vim.api.nvim_feedkeys(key, "n", false)
+        end
+
+        -- Apply keymaps to the chat output window
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "opencode_output",
+            callback = function(event)
+                -- o and Enter -> Use toggle_focus to jump to editor, then open buffer
+                vim.keymap.set("n", "o", function()
+                    smart_jump("buffer")
+                end, { buffer = event.buf, desc = "Open in editor" })
+                vim.keymap.set("n", "<CR>", function()
+                    smart_jump("buffer")
+                end, { buffer = event.buf, desc = "Open in editor" })
+
+                -- O -> Open in new Tab (does not trigger winfixbuf error)
+                vim.keymap.set("n", "O", function()
+                    smart_jump("tab")
+                end, { buffer = event.buf, desc = "Open in new tab" })
+            end,
+        })
+    end,
 }
