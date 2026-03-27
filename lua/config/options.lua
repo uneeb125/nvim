@@ -58,13 +58,8 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- -----------------------------------------------------------------------------
 -- TEXT EDITING & INDENTATION
 -- -----------------------------------------------------------------------------
--- Set textwidth to the window width on resize
-vim.api.nvim_create_autocmd({ "VimResized", "WinEnter", "BufEnter" }, {
-    pattern = "*",
-    callback = function()
-        vim.opt.textwidth = vim.fn.winwidth(0) - 7
-    end,
-})
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = "80"
 
 vim.opt.formatoptions:append("t")
 
