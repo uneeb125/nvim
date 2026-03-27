@@ -60,6 +60,7 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- -----------------------------------------------------------------------------
 vim.opt.textwidth = 80
 vim.opt.colorcolumn = "80"
+vim.opt.cursorcolumn = true
 
 vim.opt.formatoptions:append("t")
 
