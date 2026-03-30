@@ -54,7 +54,7 @@ return {
             marksman = {},
             lua_ls = {},
             texlab = {},
-            ltex_plus = {},
+            "harper-ls",
             -- Add more LSPs here...
 
             -- Linters / Formatters
@@ -69,18 +69,6 @@ return {
                         on_attach = on_attach,
                         capabilities = capabilities,
                     }
-                    if server_name == "ltex_plus" then
-                        server_opts.on_attach = function(client, bufnr)
-                            on_attach(client, bufnr) -- call original on_attach
-                            require("ltex_extra").setup({ init_check = false })
-                        end
-                        server_opts.debounce_text_changes = 1500
-                        server_opts.settings = {
-                            ltex = {
-                                checkTriggers = "onType",
-                            },
-                        }
-                    end
                     if server_name == "texlab" then
                         server_opts.settings = {
                             texlab = {
@@ -88,6 +76,24 @@ return {
                                     mathEnvironments = { "equation", "align", "gather", "multline", "flalign" },
                                 },
                             },
+                        }
+                    end
+                    if server_name == "harper_ls" then
+                        server_opts.filetypes = { "typst", "markdown", "gitcommit" }
+                        server_opts.settings = {
+                            ["harper-ls"] = {
+                                linters = {
+                                    spell_check = true,
+                                    spelled_numbers = false,
+                                    an_a = true,
+                                    sentence_capitalization = true,
+                                    unclosed_quotes = true,
+                                    wrong_quotes = false,
+                                    long_sentences = true,
+                                    repeated_words = true,
+                                    spaces_between_sentences = false,
+                                }
+                            }
                         }
                     end
                     require("lspconfig")[server_name].setup(server_opts)
