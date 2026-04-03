@@ -79,7 +79,12 @@ return {
                         }
                     end
                     if server_name == "harper_ls" then
-                        server_opts.filetypes = { "typst", "markdown", "gitcommit" }
+                        local allowed = { "latex", "typst", "markdown", "gitcommit", "plaintext", "rst" }
+                        local filetype = vim.bo.filetype
+                        if not vim.tbl_contains(allowed, filetype) then
+                            return
+                        end
+                        server_opts.filetypes = allowed
                         server_opts.settings = {
                             ["harper-ls"] = {
                                 linters = {
