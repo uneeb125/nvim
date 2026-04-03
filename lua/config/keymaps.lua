@@ -224,11 +224,11 @@ keymap("v", "<S-j>", "5j", opts)
 keymap("v", "<S-k>", "5k", opts)
 
 
--- Move like super-sonic
-keymap("n", "<S-A-j>", "15j", opts)
-keymap("n", "<S-A-k>", "15k", opts)
-keymap("v", "<S-A-j>", "15j", opts)
-keymap("v", "<S-A-k>", "15k", opts)
+-- -- Move like super-sonic
+-- keymap("n", "<S-A-j>", "15j", opts)
+-- keymap("n", "<S-A-k>", "15k", opts)
+-- keymap("v", "<S-A-j>", "15j", opts)
+-- keymap("v", "<S-A-k>", "15k", opts)
 
 -- Move in insert mode
 keymap("i", "<A-j>", "<ESC>ji", opts)
