@@ -58,6 +58,19 @@ return {
             folding = {
               ranges = true,
             },
+            inlayHints = {
+              enabled = true,
+              typeHints = {
+                enable = true,
+                hideclosureInitialization = false,
+              },
+              parameterHints = {
+                enable = true,
+              },
+              chainingHints = {
+                enable = true,
+              },
+            },
           },
         },
         
@@ -94,6 +107,7 @@ return {
           map("<leader>rc", function() vim.cmd.RustLsp("openCargo") end, "[R]ust [C]argo.toml")
 
           map("<leader>rk", vim.lsp.buf.hover, "[K] Hover/Type Tooltip")
+          map("<leader>rh", function() vim.cmd.RustLsp("inlayHints") end, "[R]ust Inlay [H]ints Toggle")
           
           -- Standard LSP helpers
           map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
