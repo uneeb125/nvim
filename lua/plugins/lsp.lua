@@ -30,7 +30,7 @@ return {
         -- Configure diagnostic signs and virtual text.
         vim.diagnostic.config({
             severity_sort = true,
-            virtual_text = false,
+            virtual_text = true,
             float = { border = "rounded", source = "if_many" },
             signs = {
                 text = {
@@ -41,6 +41,9 @@ return {
                 },
             },
         })
+
+        -- Enable inlay hints by default
+        vim.lsp.inlay_hint.enable(true)
 
         -- Get LSP capabilities from blink.cmp.
         local capabilities = require("blink.cmp").get_lsp_capabilities()
