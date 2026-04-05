@@ -106,9 +106,9 @@ return {
           map("<leader>rm", function() vim.cmd.RustLsp({ 'view', 'mir' }) end, "View MIR")
           map("<leader>rs", function() vim.cmd.RustLsp('ssr') end, "Structural Search Replace")
           map("<leader>lc", function() vim.cmd.RustLsp('flyCheck') end, "Manual FlyCheck")
-          map("<leader>ee", function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end, "Render Full Error")
-          map("<leader>ed", function() vim.cmd.RustLsp('relatedDiagnostics') end, "Related Diagnostics")
-          map("<leader>up", function() vim.cmd.RustLsp('parentModule') end, "Parent Module")
+          map("<leader>re", function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end, "Render Full Error")
+          map("<leader>rd", function() vim.cmd.RustLsp('relatedDiagnostics') end, "Related Diagnostics")
+          map("<leader>rp", function() vim.cmd.RustLsp('parentModule') end, "Parent Module")
           map("<leader>re", function() vim.cmd.RustLsp('expandMacro') end, "Expand Macro")
           
           -- RUN / DEBUG
