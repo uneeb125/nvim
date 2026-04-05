@@ -53,10 +53,10 @@ return {
         -- Define the list of LSP servers and tools you want to use.
         local servers = {
             -- LSPs
-            bashls = {},
-            marksman = {},
-            lua_ls = {},
-            texlab = {},
+            "bashls",
+            "marksman",
+            "lua_ls",
+            "texlab",
             "harper-ls",
             -- Add more LSPs here...
 
