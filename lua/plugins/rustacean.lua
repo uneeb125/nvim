@@ -1,6 +1,6 @@
 return {
   'mrcjkb/rustaceanvim',
-  version = '^6',
+  version = '^8',
   lazy = false, -- Plugin handles its own lazy loading
   dependencies = {
     'mfussenegger/nvim-dap',
