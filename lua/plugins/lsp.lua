@@ -58,6 +58,7 @@ return {
             "lua_ls",
             "texlab",
             "harper-ls",
+            "tinymist",
             -- Add more LSPs here...
 
             -- Linters / Formatters

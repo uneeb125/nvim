@@ -27,7 +27,7 @@ return {
             preset = "default",
             ["<Tab>"] = { "accept", "fallback" },
             ["<C-space>"] = {},
-            ["<C-s>"] = { "show", "show_signature", "hide_signature" },
+            ["<C-l>"] = { "show", "show_signature", "hide_signature" },
             ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
             ["<C-e>"] = { "hide", "show" },
         },
