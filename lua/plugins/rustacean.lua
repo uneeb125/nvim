@@ -41,47 +41,52 @@ return {
     end
 
     -- 3. CONFIGURE RUSTACEANVIM
-    vim.g.rustaceanvim = {
-      tools = {
-        float_win_config = { border = 'rounded' },
-        -- Enable background test parsing (fails appear as diagnostics)
-        test_executor = 'background',
-        hover_actions = { auto_focus = true },
-        code_actions = { ui_select_fallback = true },
-      },
-      
-      dap = {
-        adapter = (codelldb_path and liblldb_path) 
-          and require('rustaceanvim.config').get_codelldb_adapter(codelldb_path, liblldb_path) 
-          or nil,
-      },
+    -- Use a function so blink.cmp capabilities are resolved lazily
+    -- (blink.cmp loads on InsertEnter, after this plugin loads at startup)
+    vim.g.rustaceanvim = function()
+      return {
+        tools = {
+          float_win_config = { border = 'rounded' },
+          test_executor = 'background',
+          hover_actions = { auto_focus = true },
+          code_actions = { ui_select_fallback = true },
+        },
 
-      server = {
-        -- Connect to lspmux
-        cmd = { 'lspmux' },
-        root_dir = get_root_dir,
-        
-        default_settings = {
-          ['rust-analyzer'] = {
-            cargo = { allFeatures = true },
-            -- Critical: Disable checkOnSave for rustc to prevent lspmux timeouts
-            checkOnSave = false, 
-            procMacro = { enable = true },
-            rustc = { source = "discover" },
-            folding = { ranges = true },
-            -- Detailed Inlay Hints
-            inlayHints = {
-              enabled = true,
-              typeHints = { enable = true },
-              parameterHints = { enable = true },
-              chainingHints = { enable = true },
-              bindingModeHints = { enable = true },
-              closingBraceHints = { enable = true },
+        dap = {
+          adapter = (codelldb_path and liblldb_path)
+            and require('rustaceanvim.config').get_codelldb_adapter(codelldb_path, liblldb_path)
+            or nil,
+        },
+
+        server = {
+          capabilities = require('blink.cmp').get_lsp_capabilities(),
+          cmd = { 'lspmux' },
+          root_dir = get_root_dir,
+
+          default_settings = {
+            ['rust-analyzer'] = {
+              cargo = { allFeatures = true },
+              checkOnSave = false,
+              procMacro = { enable = true },
+              rustc = { source = "discover" },
+              folding = { ranges = true },
+              completion = {
+                addCallParenthesis = true,
+                addCallArgumentSnippets = true,
+                fullFunctionSignatures = { enable = true },
+              },
+              inlayHints = {
+                enabled = true,
+                typeHints = { enable = true },
+                parameterHints = { enable = true },
+                chainingHints = { enable = true },
+                bindingModeHints = { enable = true },
+                closingBraceHints = { enable = true },
+              },
             },
           },
-        },
-        
-        on_attach = function(client, bufnr)
+
+          on_attach = function(client, bufnr)
           local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc, silent = true })
           end
@@ -119,5 +124,6 @@ return {
         end,
       },
     }
+    end
   end
 }

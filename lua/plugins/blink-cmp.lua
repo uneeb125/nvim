@@ -35,9 +35,14 @@ return {
             nerd_font_variant = "mono",
         },
 
-        completion = { 
+        completion = {
             documentation = { auto_show = true },
-            ghost_text = { enabled = false }
+            ghost_text = { enabled = false },
+            keyword = { range = "full" },
+            trigger = {
+                show_on_trigger_character = true,
+                show_on_keyword = true,
+            },
         },
         signature = { enabled = true },
 
