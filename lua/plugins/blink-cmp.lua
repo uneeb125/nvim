@@ -42,7 +42,6 @@ return {
             trigger = {
                 show_on_trigger_character = true,
                 show_on_keyword = true,
-                show_on_edit = true,
             },
         },
         signature = { enabled = true },

@@ -100,7 +100,7 @@ return {
           end, "Fzf Implementations")
 
           -- COMPILER DEV POWER TOOLS
-          map("K", function() vim.cmd.RustLsp({ 'hover', 'actions' }) end, "Hover Actions")
+          map("go", function() vim.cmd.RustLsp({ 'hover', 'actions' }) end, "Hover Actions")
           map("<leader>ra", function() vim.cmd.RustLsp('codeAction') end, "Code Actions")
           map("<leader>rh", function() vim.cmd.RustLsp({ 'view', 'hir' }) end, "View HIR")
           map("<leader>rm", function() vim.cmd.RustLsp({ 'view', 'mir' }) end, "View MIR")
@@ -109,7 +109,7 @@ return {
           map("<leader>re", function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end, "Render Full Error")
           map("<leader>rd", function() vim.cmd.RustLsp('relatedDiagnostics') end, "Related Diagnostics")
           map("<leader>rp", function() vim.cmd.RustLsp('parentModule') end, "Parent Module")
-          map("<leader>re", function() vim.cmd.RustLsp('expandMacro') end, "Expand Macro")
+          map("<leader>re", function() require('rustaceanvim.commands.expand_macro')() end, "Expand Macro")
           
           -- RUN / DEBUG
           map("<leader>rr", function() vim.cmd.RustLsp('runnables') end, "Runnables")
@@ -120,7 +120,7 @@ return {
           map("<leader>rk", vim.lsp.buf.hover, "LSP Hover")
           map("<leader>rc", function() vim.cmd.RustLsp('openCargo') end, "Open Cargo.toml")
           map("<leader>cr", vim.lsp.buf.rename, "Rename")
-          map("J", function() vim.cmd.RustLsp('joinLines') end, "Smart Join Lines")
+          map("<leader>j", function() vim.cmd.RustLsp('joinLines') end, "Smart Join Lines")
         end,
       },
     }
