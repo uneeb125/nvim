@@ -291,16 +291,6 @@ return {
             end
         end
 
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = "opencode_input",
-            callback = function(event)
-                vim.schedule(function()
-                    pcall(vim.keymap.del, "n", "<CR>", { buffer = event.buf })
-                    pcall(vim.keymap.del, "v", "<CR>", { buffer = event.buf })
-                end)
-            end,
-        })
-
         -- Apply keymaps to the chat output window
         vim.api.nvim_create_autocmd("FileType", {
             pattern = "opencode_output",
@@ -310,10 +300,10 @@ return {
                     smart_jump("buffer", "o")
                 end, { buffer = event.buf, desc = "Open in editor" })
 
-                -- Enter -> Use toggle_focus to jump to editor, then open buffer
-                vim.keymap.set("n", "<CR>", function()
-                    smart_jump("buffer", "<CR>")
-                end, { buffer = event.buf, desc = "Open in editor" })
+                -- -- Enter -> Use toggle_focus to jump to editor, then open buffer
+                -- vim.keymap.set("n", "<CR>", function()
+                --     smart_jump("buffer", "<CR>")
+                -- end, { buffer = event.buf, desc = "Open in editor" })
 
                 -- O -> Open in new Tab (does not trigger winfixbuf error)
                 vim.keymap.set("n", "O", function()

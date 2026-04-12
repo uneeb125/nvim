@@ -49,6 +49,9 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
+
+keymap("n", "<C-q>", "<C-w>q", opts)
+
 -- keymap("n", "F", ":HopLineStartMW<CR>", opts)
 -- keymap("n", "fw", ":HopWordMW<CR>", opts)
 -- keymap("n", "fp", ":HopPatternMW<CR>", opts)
