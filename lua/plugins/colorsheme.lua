@@ -79,6 +79,18 @@ return {
             },
         })
 
+        vim.opt.termguicolors = true
+        vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
+        vim.api.nvim_set_hl(0, "NormalNC", { bg = "#000000" })
+
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            pattern = "*",
+            callback = function()
+                vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
+                vim.api.nvim_set_hl(0, "NormalNC", { bg = "#000000" })
+            end,
+        })
+        
         -- 3. Load the colorscheme
         vim.cmd.colorscheme("catppuccin")
         
