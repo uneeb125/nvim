@@ -38,13 +38,13 @@ vim.opt.cmdheight = 1 -- More space for messages
 vim.opt.pumheight = 10 -- Pop-up menu height
 vim.opt.showtabline = 0 -- Always hide the tabline
 vim.opt.laststatus = 3 -- Always display the status line
-vim.opt.showcmd = false -- Don't show the command in the last line
+vim.opt.showcmd = true -- Show the command in the last line
 vim.opt.ruler = false -- Don't show the ruler
 vim.opt.guifont = "monospace:h17" -- Font for graphical Neovim
 
 -- Line Numbers
 vim.opt.number = true -- Show line numbers
-vim.opt.relativenumber = false -- Show relative line numbers
+vim.opt.relativenumber = true -- Show relative line numbers
 vim.opt.numberwidth = 4 -- Width of the number column
 vim.opt.signcolumn = "yes" -- Always show the sign column
 

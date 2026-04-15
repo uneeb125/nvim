@@ -71,6 +71,11 @@ keymap("n", "<S-l>", ":bnext<CR>", opts)
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
+-- Toggle relative line numbers
+keymap("n", "<leader>vl", function()
+    vim.o.relativenumber = not vim.o.relativenumber
+end, { desc = "Toggle relative line numbers" })
+
 -- Close buffers
 keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 

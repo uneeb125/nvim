@@ -24,7 +24,7 @@ return {
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
         animate = {
-            enabled = true,
+            enabled = false,
             easing = "outQuad",
             duration = 20,
             fps = 30,
@@ -33,14 +33,14 @@ return {
             enabled = true,
             notify = true,
             size = 1.5 * 1024 * 1024,
-            line_length = 5000,
+            line_length = 2000,
             setup = function(ctx)
                 if vim.fn.exists(":NoMatchParen") ~= 0 then
                     vim.cmd([[NoMatchParen]])
                 end
                 Snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
                 vim.b.completion = false
-                vim.b.minianimate_disable = true
+                vim.b.minianimate_disable = false
                 vim.b.minihipatterns_disable = true
                 vim.schedule(function()
                     if vim.api.nvim_buf_is_valid(ctx.buf) then
@@ -58,7 +58,7 @@ return {
                 siblings = true,
             },
             animate = {
-                enabled = vim.fn.has("nvim-0.10") == 1,
+                enabled = false,
                 easing = "outQuad",
                 duration = {
                     step = 20,
@@ -81,7 +81,7 @@ return {
                 hl = "SnacksIndent",
             },
             animate = {
-                enabled = vim.fn.has("nvim-0.10") == 1,
+                enabled = false,
                 style = "out",
                 easing = "linear",
                 duration = {
@@ -98,7 +98,7 @@ return {
                 hl = "SnacksIndentScope",
             },
             chunk = {
-                enabled = false,
+                enabled = true,
                 only_current = false,
                 priority = 200,
                 hl = "SnacksIndentChunk",
@@ -598,10 +598,12 @@ return {
         scroll = {
             enabled = false,
             animate = {
+                enabled = false,
                 duration = { step = 20, total = 200 },
                 easing = "linear",
             },
             animate_repeat = {
+                enabled = false,
                 delay = 100,
                 duration = { step = 5, total = 50 },
                 easing = "linear",
