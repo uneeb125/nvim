@@ -68,13 +68,89 @@ return {
 
         local opencode_edits = {}
         local opencode_pending_edits = {}
+        local opencode_current_session_id = nil
+        local opencode_history_dir = vim.fn.stdpath("data") .. "/opencode/history"
+
+        local function opencode_get_history_file(session_id)
+            return opencode_history_dir .. "/" .. session_id .. ".json"
+        end
+
+        local function opencode_load_edits(session_id)
+            local file = opencode_get_history_file(session_id)
+            if vim.fn.filereadable(file) == 0 then
+                return {}
+            end
+            local content = vim.fn.readfile(file)
+            if #content > 0 then
+                local ok, edits = pcall(vim.json.decode, table.concat(content, "\n"))
+                if ok and type(edits) == "table" then
+                    return edits
+                end
+            end
+            return {}
+        end
+
+        local function opencode_save_edits(session_id, edits)
+            vim.fn.mkdir(opencode_history_dir, "p")
+            local file = opencode_get_history_file(session_id)
+            vim.fn.writefile({ vim.json.encode(edits) }, file)
+        end
+
+        local function opencode_apply_session(session_id)
+            vim.notify("Sync session: current=" .. (opencode_current_session_id or "nil") .. " new=" .. session_id, vim.log.levels.DEBUG)
+            if session_id ~= opencode_current_session_id then
+                if opencode_current_session_id then
+                    opencode_save_edits(opencode_current_session_id, opencode_edits)
+                end
+                opencode_current_session_id = session_id
+                opencode_edits = opencode_load_edits(session_id)
+                vim.notify("Switched to session: " .. session_id .. " (" .. #opencode_edits .. " edits)", vim.log.levels.INFO)
+            end
+        end
+
+        local function opencode_sync_session()
+            if opencode_current_session_id then
+                return
+            end
+            require("opencode.server").get(false):next(function(server)
+                server:get_sessions_status(function(statuses)
+                    local active_session_id = nil
+                    if statuses then
+                        for _, status in ipairs(statuses) do
+                            if status.status and (status.status.type == "idle" or status.status.type == "busy") then
+                                active_session_id = status.sessionID
+                                break
+                            end
+                        end
+                    end
+                    if active_session_id then
+                        opencode_apply_session(active_session_id)
+                    end
+                end)
+            end):catch(function(err)
+                vim.notify("Sync session failed: " .. err, vim.log.levels.DEBUG)
+            end)
+        end
 
         vim.api.nvim_create_autocmd("User", {
             pattern = "OpencodeEvent:*",
             callback = function(args)
                 local event = args.data.event
+                if not opencode_current_session_id then
+                    opencode_sync_session()
+                end
                 if event.type == "session.idle" then
                     vim.notify("opencode finished responding", vim.log.levels.INFO)
+                elseif event.type == "session.status" or event.type == "message.updated" then
+                    local session_id = event.properties and event.properties.sessionID or event.sessionID
+                    if session_id and session_id ~= opencode_current_session_id then
+                        if opencode_current_session_id then
+                            opencode_save_edits(opencode_current_session_id, opencode_edits)
+                        end
+                        opencode_current_session_id = session_id
+                        opencode_edits = opencode_load_edits(session_id)
+                        vim.notify("Switched to opencode session: " .. session_id .. " (" .. #opencode_edits .. " edits)", vim.log.levels.INFO)
+                    end
                 elseif event.type == "message.part.updated" then
                     local props = event.properties
                     if props.part and props.part.type == "tool" then
@@ -141,6 +217,9 @@ return {
                                             diff = diff,
                                             timestamp = vim.uv.now(),
                                         })
+                                        if opencode_current_session_id then
+                                            opencode_save_edits(opencode_current_session_id, opencode_edits)
+                                        end
                                         vim.notify("Recorded opencode edit: " .. tool_name .. " " .. filepath .. (pending.line and ":" .. pending.line or ""), vim.log.levels.INFO)
                                         opencode_pending_edits[part_id] = nil
                                     end
@@ -153,34 +232,52 @@ return {
         })
 
         vim.keymap.set("n", "<leader>oe", function()
-            if #opencode_edits == 0 then
-                vim.notify("No opencode edits recorded", vim.log.levels.INFO)
-                return
-            end
-            local items = vim.tbl_map(function(edit, idx)
-                local line_str = edit.line and ":" .. edit.line or ""
-                return {
-                    idx = idx,
-                    text = string.format("[%s] %s%s: %s", edit.tool, edit.file, line_str, edit.diff and "(diff)" or "(no diff)"),
-                    edit = edit,
-                }
-            end, opencode_edits)
-
-            vim.ui.select(items, {
-                prompt = "Opencode Edits",
-                format_item = function(item)
-                    return item.text
-                end,
-            }, function(choice)
-                if not choice then return end
-                local edit = choice.edit
-                local line = edit.line or 1
-                vim.cmd("tabnew +" .. line .. " " .. edit.file)
-                if edit.diff then
-                    local patch_file = vim.fn.tempname() .. ".patch"
-                    vim.fn.writefile(vim.split(edit.diff, "\n"), patch_file)
-                    vim.cmd("silent! vert diffpatch " .. patch_file)
+            opencode_sync_session()
+            vim.schedule(function()
+                if #opencode_edits == 0 then
+                    vim.notify("No opencode edits recorded", vim.log.levels.INFO)
+                    return
                 end
+                local items = vim.tbl_map(function(edit, idx)
+                    local line_str = edit.line and ":" .. edit.line or ""
+                    return {
+                        idx = idx,
+                        text = string.format("[%s] %s%s: %s", edit.tool, edit.file, line_str, edit.diff and "(diff)" or "(no diff)"),
+                        edit = edit,
+                    }
+                end, opencode_edits)
+
+                local function open_edit(edit, use_tab)
+                    local line = edit.line or 1
+                    local cmd = use_tab and "tabnew" or "new"
+                    vim.cmd(cmd .. " +" .. line .. " " .. edit.file)
+                    if edit.diff then
+                        local patch_file = vim.fn.tempname() .. ".patch"
+                        vim.fn.writefile(vim.split(edit.diff, "\n"), patch_file)
+                        vim.cmd("silent! vert diffpatch " .. patch_file)
+                    end
+                end
+
+                require("snacks.picker").pick({
+                    title = "Opencode Edits",
+                    items = items,
+                    format = function(item)
+                        return { { item.text } }
+                    end,
+                    confirm = function(picker, item)
+                        open_edit(item.edit, false)
+                        picker:close()
+                    end,
+                    keys = {
+                        ["<S-CR>"] = {
+                            function(picker, item)
+                                open_edit(item.edit, true)
+                                picker:close()
+                            end,
+                            desc = "Open in tab",
+                        },
+                    },
+                })
             end)
         end, { desc = "Review opencode edits" })
 
