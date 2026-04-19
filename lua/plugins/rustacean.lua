@@ -125,7 +125,18 @@ return {
           map("<leader>rr", function() vim.cmd.RustLsp('runnables') end, "Runnables")
           map("<leader>rd", function() vim.cmd.RustLsp('debuggables') end, "Debuggables")
           map("<leader>rt", function() vim.cmd.RustLsp('testables') end, "Testables")
-          
+
+          vim.b.rustaceanvim_check_on_save = false
+          map("<leader>rj", function()
+            local new_state = not vim.b.rustaceanvim_check_on_save
+            vim.b.rustaceanvim_check_on_save = new_state
+            client.notify('workspace/didChangeConfiguration', {
+              settings = { ['rust-analyzer'] = { checkOnSave = new_state } },
+            })
+            vim.notify(string.format('Rust checkOnSave: %s', new_state and 'ENABLED' or 'DISABLED'))
+          end, "Toggle Check on Save [J]")
+          map("<leader>rl", function() vim.cmd.RustLsp('flyCheck') end, "Run FlyCheck Now [L]")
+
           -- MISC
           map("<leader>rk", vim.lsp.buf.hover, "LSP Hover")
           map("<leader>rc", function() vim.cmd.RustLsp('openCargo') end, "Open Cargo.toml")
