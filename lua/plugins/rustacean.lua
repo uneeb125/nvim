@@ -135,7 +135,7 @@ return {
             })
             vim.notify(string.format('Rust checkOnSave: %s', new_state and 'ENABLED' or 'DISABLED'))
           end, "Toggle Check on Save [J]")
-          map("<leader>rl", function() vim.cmd.RustLsp('flyCheck') end, "Run FlyCheck Now [L]")
+          map("<leader>rl", function() vim.cmd('w') vim.cmd.RustLsp('flyCheck') end, "Run FlyCheck Now [L]")
 
           -- MISC
           map("<leader>rk", vim.lsp.buf.hover, "LSP Hover")
