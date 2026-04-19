@@ -219,12 +219,13 @@ keymap("n", "<leader>Ds", function()
         format_item = function(item) return item.name end,
     }, function(choice)
         if choice then
-            vim.diagnostic.config({
+            local current = vim.diagnostic.config()
+            vim.diagnostic.config(vim.tbl_deep_extend("force", current, {
                 virtual_text = { severity = { min = choice.level } },
                 signs = { severity = { min = choice.level } },
                 underline = { severity = { min = choice.level } },
                 float = { severity = { min = choice.level } },
-            })
+            }))
             vim.notify("Diagnostic severity: " .. choice.name)
         end
     end)
