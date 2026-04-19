@@ -2,16 +2,28 @@ return {
   s("comp", {
     t("#[compartments("),
     i(1),
-    t(")]"),
+    t(")]")
   }),
   s("trusted_comp", {
     t("#[trusted_compartments("),
     i(1),
-    t(")]"),
+    t(")]")
   }),
   s("compas", {
     t("compas comp("),
     i(1),
-    t(")"),
+    t(")")
+  }),
+  s("init", {
+    i(1, "StructName"),
+    t(" { "),
+    i(2, ".."),
+    t(" }")
+  }),
+  s("struct", {
+    i(1, "StructName"),
+    t({" {", "    "}),
+    i(2, "field: value"),
+    t({",", "}"})
   }),
 }

@@ -1,64 +1,88 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
     event = "VeryLazy",
     dependencies = {
-        "nvim-treesitter/nvim-treesitter-textobjects",
+        {
+            "nvim-treesitter/nvim-treesitter-textobjects",
+            branch = "main",
+            init = function()
+                vim.g.no_plugin_maps = true
+            end,
+        },
+        "shushtain/incselect.nvim",
     },
     config = function()
-        require("nvim-treesitter.configs").setup({
-            ensure_installed = {},
-            sync_install = false,
-            auto_install = true,
+        local treesitter = require("nvim-treesitter")
 
-            highlight = {
-                enable = true,
-                disable = { "latex" },
-            },
+        vim.api.nvim_create_autocmd("FileType", {
+            callback = function(args)
+                local bufnr = args.buf
+                local filetype = vim.bo[bufnr].filetype
 
-            indent = {
-                enable = true,
-            },
+                if filetype == "latex" then
+                    return
+                end
 
-            textobjects = {
-                select = {
-                    enable = true,
-                    lookahead = true,
-                    keymaps = {
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["ac"] = "@class.outer",
-                        ["ao"] = "@comment.outer",
-                        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                        ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
-                    },
-                    selection_modes = {
-                        ["@parameter.outer"] = "v",
-                        ["@function.outer"] = "V",
-                        ["@class.outer"] = "<c-v>",
-                    },
-                    include_surrounding_whitespace = true,
+                pcall(vim.treesitter.start, bufnr)
+                vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+                local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+                if not ok then
+                    pcall(function()
+                        treesitter.install({ filetype })
+                    end)
+                end
+            end,
+        })
+
+        require("nvim-treesitter-textobjects").setup({
+            select = {
+                lookahead = true,
+                selection_modes = {
+                    ["@parameter.outer"] = "v",
+                    ["@function.outer"] = "V",
+                    ["@class.outer"] = "<c-v>",
                 },
-                swap = {
-                    enable = true,
-                    swap_next = {
-                        ["<leader>a"] = { query = "@parameter.inner", desc = "Swap with next parameter" },
-                    },
-                    swap_previous = {
-                        ["<leader>A"] = "@parameter.inner",
-                    },
-                },
-            },
-
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = "<Enter>",
-                    node_incremental = "<Enter>",
-                    scope_incremental = false,
-                    node_decremental = "<Backspace>",
-                },
+                include_surrounding_whitespace = true,
             },
         })
+
+        vim.keymap.set({ "x", "o" }, "af", function()
+            require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+        end, { desc = "Select outer function" })
+
+        vim.keymap.set({ "x", "o" }, "if", function()
+            require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+        end, { desc = "Select inner function" })
+
+        vim.keymap.set({ "x", "o" }, "ac", function()
+            require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
+        end, { desc = "Select outer class" })
+
+        vim.keymap.set({ "x", "o" }, "ic", function()
+            require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
+        end, { desc = "Select inner class" })
+
+        vim.keymap.set({ "x", "o" }, "ao", function()
+            require("nvim-treesitter-textobjects.select").select_textobject("@comment.outer", "textobjects")
+        end, { desc = "Select outer comment" })
+
+        vim.keymap.set({ "x", "o" }, "as", function()
+            require("nvim-treesitter-textobjects.select").select_textobject("@local.scope", "locals")
+        end, { desc = "Select language scope" })
+
+        vim.keymap.set("n", "<leader>a", function()
+            require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
+        end, { desc = "Swap with next parameter" })
+
+        vim.keymap.set("n", "<leader>A", function()
+            require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner")
+        end, { desc = "Swap with previous parameter" })
+
+        vim.keymap.set("n", "<Enter>", require("incselect").init, { desc = "Treesitter init selection" })
+        vim.keymap.set({ "x", "v" }, "<Enter>", require("incselect").parent, { desc = "Treesitter expand selection" })
+        vim.keymap.set({ "x", "v" }, "<Backspace>", require("incselect").child, { desc = "Treesitter shrink selection" })
     end,
 }

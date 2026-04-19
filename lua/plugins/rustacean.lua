@@ -1,13 +1,9 @@
 return {
   'mrcjkb/rustaceanvim',
-  version = '^8',
+  version = '^9',
   lazy = false, -- Plugin handles its own lazy loading
   dependencies = {
     'mfussenegger/nvim-dap',
-    {
-      'nvim-treesitter/nvim-treesitter',
-      opts = { ensure_installed = { 'rust' } },
-    },
   },
   config = function()
     -- 1. DYNAMIC DEBUGGER SETUP (Mason codelldb)
@@ -74,6 +70,20 @@ return {
                 addCallParenthesis = true,
                 addCallArgumentSnippets = true,
                 fullFunctionSignatures = { enable = true },
+                postfix = { enable = true },
+                autoimport = { enable = true },
+                autoself = { enable = true },
+                callable = { snippets = "fill_arguments" },
+              },
+              assist = {
+                importGranularity = "module",
+                importPrefix = "self",
+                emitMustUse = false,
+              },
+              lens = {
+                enable = true,
+                run = { enable = true },
+                debug = { enable = true },
               },
               inlayHints = {
                 enabled = true,
@@ -90,6 +100,8 @@ return {
           local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc, silent = true })
           end
+
+          client.server_capabilities.semanticTokensProvider = nil
 
           -- STANDARD NAVIGATION
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")

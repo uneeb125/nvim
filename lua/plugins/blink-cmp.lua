@@ -38,10 +38,11 @@ return {
         completion = {
             documentation = { auto_show = true },
             ghost_text = { enabled = false },
-            keyword = { range = "prefix" },
+            keyword = { range = "full" },
             trigger = {
                 show_on_trigger_character = true,
                 show_on_keyword = true,
+                show_on_insert_on_trigger_character = true,
             },
         },
         signature = { enabled = true },
