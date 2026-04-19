@@ -101,8 +101,6 @@ return {
             vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc, silent = true })
           end
 
-          client.server_capabilities.semanticTokensProvider = nil
-
           -- STANDARD NAVIGATION
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
           map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
