@@ -20,10 +20,4 @@ return {
     i(2, ".."),
     t(" }")
   }),
-  s("struct", {
-    i(1, "StructName"),
-    t({" {", "    "}),
-    i(2, "field: value"),
-    t({",", "}"})
-  }),
 }
