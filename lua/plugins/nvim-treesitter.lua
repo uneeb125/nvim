@@ -25,14 +25,12 @@ return {
                     return
                 end
 
-                pcall(vim.treesitter.start, bufnr)
-                vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-
-                local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
-                if not ok then
-                    pcall(function()
-                        treesitter.install({ filetype })
-                    end)
+                local lang = vim.treesitter.language.get_lang(filetype)
+                if not lang or vim.list_contains(treesitter.get_installed(), lang) then
+                    pcall(vim.treesitter.start, bufnr)
+                    vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                else
+                    treesitter.install({ lang })
                 end
             end,
         })
