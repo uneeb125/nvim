@@ -207,6 +207,28 @@ keymap("n", "<leader>Dw", "<cmd>FzfLua diagnostics_workspace<CR>", { desc = "Lis
 -- quickfix diagnostics
 keymap("n", "<leader>dl", function() vim.diagnostic.setqflist({ bufnr = 0 }) vim.cmd("copen") end, { desc = "List buffer diagnostics (Quickfix)" })
 keymap("n", "<leader>dw", function() vim.diagnostic.setqflist() vim.cmd("copen") end, { desc = "List workspace diagnostics (Quickfix)" })
+keymap("n", "<leader>Ds", function()
+    local severities = {
+        { name = "All (Error, Warn, Info, Hint)", level = vim.diagnostic.severity.HINT },
+        { name = "Error, Warn, Info", level = vim.diagnostic.severity.INFO },
+        { name = "Error, Warn", level = vim.diagnostic.severity.WARN },
+        { name = "Error only", level = vim.diagnostic.severity.ERROR },
+    }
+    vim.ui.select(severities, {
+        prompt = "Select Diagnostic Severity Level",
+        format_item = function(item) return item.name end,
+    }, function(choice)
+        if choice then
+            vim.diagnostic.config({
+                virtual_text = { severity = { min = choice.level } },
+                signs = { severity = { min = choice.level } },
+                underline = { severity = { min = choice.level } },
+                float = { severity = { min = choice.level } },
+            })
+            vim.notify("Diagnostic severity: " .. choice.name)
+        end
+    end)
+end, { desc = "Set Diagnostic Severity Level" })
 
 
 -- vim.keymap.set("n", "<leader>di", function()
