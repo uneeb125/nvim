@@ -179,28 +179,28 @@ return {
             },
         })
 
-        vim.keymap.set("n", "<leader>cct", crates.toggle, { desc = "Crates: Toggle UI" })
-        vim.keymap.set("n", "<leader>ccr", crates.reload, { desc = "Crates: Reload/Clear Cache" })
+        vim.keymap.set("n", "<leader>cCt", crates.toggle, { desc = "Crates: Toggle UI" })
+        vim.keymap.set("n", "<leader>cCr", crates.reload, { desc = "Crates: Reload/Clear Cache" })
 
-        vim.keymap.set("n", "<leader>ccv", crates.show_versions_popup, { desc = "Crates: Versions Popup" })
-        vim.keymap.set("n", "<leader>ccf", crates.show_features_popup, { desc = "Crates: Features Popup" })
-        vim.keymap.set("n", "<leader>ccd", crates.show_dependencies_popup, { desc = "Crates: Dependencies Popup" })
+        vim.keymap.set("n", "<leader>cCv", crates.show_versions_popup, { desc = "Crates: Versions Popup" })
+        vim.keymap.set("n", "<leader>cCf", crates.show_features_popup, { desc = "Crates: Features Popup" })
+        vim.keymap.set("n", "<leader>cCd", crates.show_dependencies_popup, { desc = "Crates: Dependencies Popup" })
 
-        vim.keymap.set("n", "<leader>ccu", crates.update_crate, { desc = "Crates: Update Crate (Compatible)" })
-        vim.keymap.set("v", "<leader>ccu", crates.update_crates, { desc = "Crates: Update Selected Crates" })
-        vim.keymap.set("n", "<leader>cca", crates.update_all_crates, { desc = "Crates: Update All Crates" })
-        vim.keymap.set("n", "<leader>ccU", crates.upgrade_crate, { desc = "Crates: Upgrade Crate (Newest)" })
-        vim.keymap.set("v", "<leader>ccU", crates.upgrade_crates, { desc = "Crates: Upgrade Selected Crates" })
-        vim.keymap.set("n", "<leader>ccA", crates.upgrade_all_crates, { desc = "Crates: Upgrade All Crates" })
+        vim.keymap.set("n", "<leader>cCu", crates.update_crate, { desc = "Crates: Update Crate (Compatible)" })
+        vim.keymap.set("v", "<leader>cCu", crates.update_crates, { desc = "Crates: Update Selected Crates" })
+        vim.keymap.set("n", "<leader>cCa", crates.update_all_crates, { desc = "Crates: Update All Crates" })
+        vim.keymap.set("n", "<leader>cCU", crates.upgrade_crate, { desc = "Crates: Upgrade Crate (Newest)" })
+        vim.keymap.set("v", "<leader>cCU", crates.upgrade_crates, { desc = "Crates: Upgrade Selected Crates" })
+        vim.keymap.set("n", "<leader>cCA", crates.upgrade_all_crates, { desc = "Crates: Upgrade All Crates" })
 
-        vim.keymap.set("n", "<leader>ccx", crates.expand_plain_crate_to_inline_table, { desc = "Crates: Expand to Inline Table" })
-        vim.keymap.set("n", "<leader>ccX", crates.extract_crate_into_table, { desc = "Crates: Extract into Table" })
-        vim.keymap.set("n", "<leader>ccg", crates.use_git_source, { desc = "Crates: Use Git Source" })
+        vim.keymap.set("n", "<leader>cCx", crates.expand_plain_crate_to_inline_table, { desc = "Crates: Expand to Inline Table" })
+        vim.keymap.set("n", "<leader>cCX", crates.extract_crate_into_table, { desc = "Crates: Extract into Table" })
+        vim.keymap.set("n", "<leader>cCg", crates.use_git_source, { desc = "Crates: Use Git Source" })
 
-        vim.keymap.set("n", "<leader>ccH", crates.open_homepage, { desc = "Crates: Open Homepage" })
-        vim.keymap.set("n", "<leader>ccR", crates.open_repository, { desc = "Crates: Open Repository" })
-        vim.keymap.set("n", "<leader>ccD", crates.open_documentation, { desc = "Crates: Open Documentation" })
-        vim.keymap.set("n", "<leader>ccC", crates.open_crates_io, { desc = "Crates: Open crates.io" })
-        vim.keymap.set("n", "<leader>ccL", crates.open_lib_rs, { desc = "Crates: Open lib.rs" })
+        vim.keymap.set("n", "<leader>cCH", crates.open_homepage, { desc = "Crates: Open Homepage" })
+        vim.keymap.set("n", "<leader>cCR", crates.open_repository, { desc = "Crates: Open Repository" })
+        vim.keymap.set("n", "<leader>cCD", crates.open_documentation, { desc = "Crates: Open Documentation" })
+        vim.keymap.set("n", "<leader>cCC", crates.open_crates_io, { desc = "Crates: Open crates.io" })
+        vim.keymap.set("n", "<leader>cCL", crates.open_lib_rs, { desc = "Crates: Open lib.rs" })
     end,
 }
