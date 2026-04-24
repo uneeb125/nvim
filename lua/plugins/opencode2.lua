@@ -47,7 +47,7 @@ return {
             require("opencode").select()
         end, { desc = "Select opencode action" })
 
-        vim.keymap.set({ "n", "x" }, "go", function()
+        vim.keymap.set({ "n", "x" }, "<leader>gl", function()
             return require("opencode").operator("@this ")
         end, { desc = "Add range to opencode", expr = true })
 
