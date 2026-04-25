@@ -21,7 +21,7 @@ return {
                 local bufnr = args.buf
                 local filetype = vim.bo[bufnr].filetype
 
-                if filetype == "latex" then
+                if filetype == "latex" or vim.startswith(filetype, "snacks_") or filetype == "fzf" then
                     return
                 end
 
