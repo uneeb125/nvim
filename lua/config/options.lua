@@ -44,7 +44,7 @@ vim.opt.guifont = "monospace:h17" -- Font for graphical Neovim
 
 -- Line Numbers
 vim.opt.number = true -- Show line numbers
-vim.opt.relativenumber = true -- Show relative line numbers
+vim.opt.relativenumber = false -- Show relative line numbers
 vim.opt.numberwidth = 4 -- Width of the number column
 vim.opt.signcolumn = "yes" -- Always show the sign column
 
