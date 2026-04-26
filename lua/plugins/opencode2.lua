@@ -245,7 +245,7 @@ return {
 
                 local function open_edit(edit, use_tab)
                     local line = edit.line or 1
-                    local cmd = use_tab and "tabnew" or "new"
+                    local cmd = use_tab and "tabnew" or "edit"
                     vim.cmd(cmd .. " +" .. line .. " " .. edit.file)
                     if edit.diff then
                         local patch_file = vim.fn.tempname() .. ".patch"
