@@ -6,7 +6,7 @@ vim.opt.clipboard = "unnamedplus" -- Use system clipboard
 vim.opt.mouse = "a" -- Enable mouse support in all modes
 vim.opt.timeoutlen = 100 -- Time in ms to wait for a mapped sequence
 vim.opt.updatetime = 300 -- Faster completion (default is 4000ms)
-vim.opt.completeopt = { "menuone", "noselect", "fuzzy" } -- Set completion options, mainly for nvim-cmp
+vim.opt.completeopt = { "menuone", "noselect" } -- Set completion options, mainly for nvim-cmp
 vim.opt.iskeyword:append("-", '"') -- Treat these characters as part of a word
 
 -- Disable built-in snippet parser to use LuaSnip
@@ -34,14 +34,11 @@ end, { ["repeat"] = -1 })
 -- -----------------------------------------------------------------------------
 vim.g.snacks_animate = true
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
-vim.opt.cmdheight = 0 -- Hide command line (uses new messagesopt in v0.12)
-vim.opt.messagesopt = "wait:500,history:500" -- Better message handling for cmdheight=0
-vim.opt.winborder = "rounded" -- Global border style for all floating windows (v0.12)
-vim.opt.mousemoveevent = true -- Enable mouse move events for richer UI interactions (v0.12)
+vim.opt.cmdheight = 1 -- More space for messages
 vim.opt.pumheight = 10 -- Pop-up menu height
 vim.opt.showtabline = 0 -- Always hide the tabline
 vim.opt.laststatus = 3 -- Always display the status line
-vim.opt.showcmd = false -- Don't show command (redundant with cmdheight=0)
+vim.opt.showcmd = true -- Show the command in the last line
 vim.opt.ruler = false -- Don't show the ruler
 vim.opt.guifont = "monospace:h17" -- Font for graphical Neovim
 

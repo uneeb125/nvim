@@ -29,7 +29,7 @@ return {
                 if not lang or vim.list_contains(treesitter.get_installed(), lang) then
                     pcall(vim.treesitter.start, bufnr)
                     vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-                else
+                elseif require("nvim-treesitter.parsers")[lang] then
                     treesitter.install({ lang })
                 end
             end,
