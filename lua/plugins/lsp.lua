@@ -31,7 +31,7 @@ return {
         vim.diagnostic.config({
             severity_sort = true,
             virtual_text = true,
-            float = { border = "rounded", source = "if_many" },
+            float = { source = "if_many" }, -- border is now handled globally by winborder (v0.12)
             signs = {
                 text = {
                     [vim.diagnostic.severity.ERROR] = "󰅚",
