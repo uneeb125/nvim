@@ -97,37 +97,37 @@ return {
           },
 
           on_attach = function(client, bufnr)
-          local map = function(keys, func, desc)
-            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc, silent = true })
+          local map = function(modes, keys, func, desc)
+            vim.keymap.set(modes, keys, func, { buffer = bufnr, desc = desc, silent = true })
           end
 
           -- STANDARD NAVIGATION
-          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-          map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-          map("gI", function()
+          map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+          map("n", "gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+          map("n", "gI", function()
             local f_ok, fzf = pcall(require, "fzf-lua")
             if f_ok then fzf.lsp_implementations() else vim.lsp.buf.implementation() end
           end, "Fzf Implementations")
 
           -- COMPILER DEV POWER TOOLS
-          map("go", function() vim.cmd.RustLsp({ 'hover', 'actions' }) end, "Hover Actions")
-          map("<leader>ra", function() vim.cmd.RustLsp('codeAction') end, "Code Actions")
-          map("<leader>rh", function() vim.cmd.RustLsp({ 'view', 'hir' }) end, "View HIR")
-          map("<leader>rm", function() vim.cmd.RustLsp({ 'view', 'mir' }) end, "View MIR")
-          map("<leader>rs", function() vim.cmd.RustLsp('ssr') end, "Structural Search Replace")
-          map("<leader>lc", function() vim.cmd.RustLsp('flyCheck') end, "Manual FlyCheck")
-          map("<leader>re", function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end, "Render Full Error")
-          map("<leader>rd", function() vim.cmd.RustLsp('relatedDiagnostics') end, "Related Diagnostics")
-          map("<leader>rp", function() vim.cmd.RustLsp('parentModule') end, "Parent Module")
-          map("<leader>re", function() require('rustaceanvim.commands.expand_macro')() end, "Expand Macro")
-          
+          map("n", "go", function() vim.cmd.RustLsp({ 'hover', 'actions' }) end, "Hover Actions")
+          map({ "n", "v" }, "<leader>ra", function() vim.cmd.RustLsp('codeAction') end, "Code Actions")
+          map("n", "<leader>rh", function() vim.cmd.RustLsp({ 'view', 'hir' }) end, "View HIR")
+          map("n", "<leader>rm", function() vim.cmd.RustLsp({ 'view', 'mir' }) end, "View MIR")
+          map({ "n", "v" }, "<leader>rs", function() vim.cmd.RustLsp('ssr') end, "Structural Search Replace")
+          map("n", "<leader>lc", function() vim.cmd.RustLsp('flyCheck') end, "Manual FlyCheck")
+          map("n", "<leader>re", function() vim.cmd.RustLsp({ 'renderDiagnostic', 'current' }) end, "Render Full Error")
+          map("n", "<leader>rd", function() vim.cmd.RustLsp('relatedDiagnostics') end, "Related Diagnostics")
+          map("n", "<leader>rp", function() vim.cmd.RustLsp('parentModule') end, "Parent Module")
+          map("n", "<leader>rme", function() require('rustaceanvim.commands.expand_macro')() end, "Expand Macro")
+
           -- RUN / DEBUG
-          map("<leader>rr", function() vim.cmd.RustLsp('runnables') end, "Runnables")
-          map("<leader>rd", function() vim.cmd.RustLsp('debuggables') end, "Debuggables")
-          map("<leader>rt", function() vim.cmd.RustLsp('testables') end, "Testables")
+          map("n", "<leader>rr", function() vim.cmd.RustLsp('runnables') end, "Runnables")
+          map("n", "<leader>rd", function() vim.cmd.RustLsp('debuggables') end, "Debuggables")
+          map("n", "<leader>rt", function() vim.cmd.RustLsp('testables') end, "Testables")
 
           vim.b.rustaceanvim_check_on_save = false
-          map("<leader>rj", function()
+          map("n", "<leader>rj", function()
             local new_state = not vim.b.rustaceanvim_check_on_save
             vim.b.rustaceanvim_check_on_save = new_state
             client.notify('workspace/didChangeConfiguration', {
@@ -135,13 +135,13 @@ return {
             })
             vim.notify(string.format('Rust checkOnSave: %s', new_state and 'ENABLED' or 'DISABLED'))
           end, "Toggle Check on Save [J]")
-          map("<leader>rl", function() vim.cmd('w') vim.cmd.RustLsp('flyCheck') end, "Run FlyCheck Now [L]")
+          map("n", "<leader>rl", function() vim.cmd('w') vim.cmd.RustLsp('flyCheck') end, "Run FlyCheck Now [L]")
 
           -- MISC
-          map("<leader>rk", vim.lsp.buf.hover, "LSP Hover")
-          map("<leader>rc", function() vim.cmd.RustLsp('openCargo') end, "Open Cargo.toml")
-          map("<leader>cr", vim.lsp.buf.rename, "Rename")
-          map("<leader>j", function() vim.cmd.RustLsp('joinLines') end, "Smart Join Lines")
+          map("n", "<leader>rk", vim.lsp.buf.hover, "LSP Hover")
+          map("n", "<leader>rc", function() vim.cmd.RustLsp('openCargo') end, "Open Cargo.toml")
+          map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
+          map({ "n", "v" }, "<leader>j", function() vim.cmd.RustLsp('joinLines') end, "Smart Join Lines")
         end,
       },
     }
