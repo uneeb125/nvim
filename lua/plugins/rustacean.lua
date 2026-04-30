@@ -111,7 +111,16 @@ return {
 
           -- COMPILER DEV POWER TOOLS
           map("n", "go", function() vim.cmd.RustLsp({ 'hover', 'actions' }) end, "Hover Actions")
-          map({ "n", "v" }, "<leader>ra", function() vim.cmd.RustLsp('codeAction') end, "Code Actions")
+          local code_action_group = require('rustaceanvim.commands.code_action_group')
+          map({ "n", "v" }, "<leader>ra", function()
+            local mode = vim.fn.mode()
+            local is_visual = mode == 'v' or mode == 'V' or mode:byte() == 22
+            if is_visual then
+              code_action_group.code_action_group_visual()
+            else
+              code_action_group.code_action_group()
+            end
+          end, "Code Actions")
           map("n", "<leader>rh", function() vim.cmd.RustLsp({ 'view', 'hir' }) end, "View HIR")
           map("n", "<leader>rm", function() vim.cmd.RustLsp({ 'view', 'mir' }) end, "View MIR")
           map({ "n", "v" }, "<leader>rs", function() vim.cmd.RustLsp('ssr') end, "Structural Search Replace")
