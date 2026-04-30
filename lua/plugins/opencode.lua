@@ -25,6 +25,9 @@ return {
 	},
 	config = function()
 		vim.g.opencode_opts = {
+			lsp = {
+				enabled = true,
+			},
 			events = {
 				permissions = {
 					edits = {
@@ -61,5 +64,8 @@ return {
 		vim.keymap.set("n", "<S-C-d>", function()
 			require("opencode").command("session.half.page.down")
 		end, { desc = "Scroll opencode down" })
+		-- Switch focus back to code window
+		vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Go to code window" })
+		vim.keymap.set("t", "<C-l>", "<C-\\><C-n>", { desc = "Terminal to normal mode" })
 	end,
 }
