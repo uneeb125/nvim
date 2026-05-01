@@ -59,6 +59,7 @@ return {
             "texlab",
             "harper-ls",
             "tinymist",
+            "ruff",
             -- Add more LSPs here...
 
             -- Linters / Formatters

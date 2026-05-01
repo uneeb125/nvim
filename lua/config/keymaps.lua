@@ -81,8 +81,6 @@ keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 
 -- Select all
 keymap("n", "<C-a>", "ggVG", opts)
-keymap("i", "<C-a>", "ggVG", opts)
-keymap("v", "<C-a>", "ggVG", opts)
 
 -- Save
 keymap("n", "<C-s>", "<cmd>w<CR>", opts)
