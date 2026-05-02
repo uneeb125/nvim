@@ -50,6 +50,39 @@ return {
         sources = {
             default = { "lsp", "path", "snippets", "buffer", "emoji", "sql", "vimtex" },
             providers = {
+                path = {
+                    name = "Path",
+                    module = "blink.cmp.sources.path",
+                    score_offset = 3,
+                    opts = {
+                        trailing_slash = false,
+                        label_trailing_slash = true,
+                        get_cwd = function(context)
+                            local bufpath = vim.api.nvim_buf_get_name(context.bufnr)
+                            local startpath = bufpath ~= "" and vim.fn.fnamemodify(bufpath, ":p:h") or vim.fn.getcwd()
+
+                            -- Use vim.fs.root if available (Neovim 0.10+)
+                            if vim.fs and vim.fs.root then
+                                local root = vim.fs.root(startpath, { ".git", ".jj", "package.json", "Cargo.toml", "pyproject.toml" })
+                                if root then
+                                    return root
+                                end
+                            end
+
+                            -- Fallback for older Neovim versions
+                            local markers = { ".git", ".jj", "package.json", "Cargo.toml", "pyproject.toml" }
+                            for _, marker in ipairs(markers) do
+                                local found = vim.fs.find(marker, { path = startpath, upward = true, stop = vim.loop.os_homedir() })
+                                if found and #found > 0 then
+                                    return vim.fn.fnamemodify(found[1], ":h")
+                                end
+                            end
+
+                            return startpath
+                        end,
+                        show_hidden_files_by_default = true,
+                    },
+                },
                 emoji = {
                     module = "blink-emoji",
                     name = "Emoji",
