@@ -42,7 +42,20 @@ return {
                 operators = {},
             },
             color_overrides = {},
-            custom_highlights = {},
+            custom_highlights = function(colors)
+                return {
+                    -- Make floating windows and popups lighter than the pure black background
+                    NormalFloat = { bg = colors.base },
+                    FloatBorder = { bg = colors.base, fg = colors.surface2 },
+                    FloatTitle = { bg = colors.base, fg = colors.lavender, bold = true },
+                    FloatFooter = { bg = colors.base, fg = colors.overlay0 },
+                    -- Completion menu
+                    Pmenu = { bg = colors.base },
+                    PmenuSel = { bg = colors.surface1 },
+                    PmenuSbar = { bg = colors.base },
+                    PmenuThumb = { bg = colors.surface2 },
+                }
+            end,
             default_integrations = true,
             integrations = {
                 cmp = true,
