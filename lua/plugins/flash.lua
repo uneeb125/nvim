@@ -46,7 +46,7 @@ return {
                 label = { exclude = "hjkliardc" },
             },
             search = {
-                enabled = true,
+                enabled = false,
                 highlight = { backdrop = false },
                 jump = {
                     history = true,
