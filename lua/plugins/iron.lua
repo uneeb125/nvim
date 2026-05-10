@@ -1,4 +1,4 @@
-return {
+local M = {
   "Vigemus/iron.nvim",
   ft = { "python", "sh", "r", "lua", "rust" }, -- filetypes for which iron.nvim should be enabled
   config = function()
@@ -65,3 +65,5 @@ return {
     vim.keymap.set('n', '<leader>rh', '<cmd>IronHide<cr>')
   end
 }
+
+return {}

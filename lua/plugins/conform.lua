@@ -12,17 +12,16 @@ return {
         -- Define specific arguments for each formatter
         formatters = {
             stylua = {
-                prepend_args = { "--indent-type", "Tabs", "--indent-width", "4" },
+                prepend_args = { "--indent-type", "Spaces", "--indent-width", "4" },
             },
             prettier = {
-                prepend_args = { "--use-tabs", "true", "--tab-width", "4" },
+                prepend_args = { "--tab-width", "4" },
             },
             prettierd = {
-                prepend_args = { "--use-tabs", "true", "--tab-width", "4" },
+                prepend_args = { "--tab-width", "4" },
             },
             rustfmt = {
-                -- Rustfmt often requires a rustfmt.toml, but you can force it here
-                prepend_args = { "--config", "hard_tabs=true,tab_spaces=4" },
+                prepend_args = { "--config", "hard_tabs=false,tab_spaces=4" },
             },
         },
         format_on_save = function(bufnr)

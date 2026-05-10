@@ -1,4 +1,3 @@
-local cmp = require("cmp")
 vim.keymap.set("n", "-", "<cmd>Oil --float<CR>", { desc = "Open Parent Directory in Oil" })
 vim.keymap.set("n", "gl", function()
     vim.diagnostic.open_float()
@@ -132,7 +131,7 @@ end, { desc = "Copy line range reference to clipboard" })
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "kj", "<ESC>", opts)
-keymap("i", "<A-o>", "cmp.mapping.abort()", opts)
+keymap("i", "<A-o>", "<Esc>o", opts)
 keymap("v", "u", "<ESC>", opts)
 
 -- Visual --
@@ -275,3 +274,23 @@ keymap("i", "<A-l>", "<ESC>li", opts)
 vim.keymap.set("n", "<leader>tt", function()
     vim.fn.feedkeys(":Template ")
 end, { remap = true, desc = "Insert Template" })
+
+-- Grug-far: Find & Replace
+vim.keymap.set({ "n", "v" }, "<leader>sr", function()
+    require("grug-far").open()
+end, { desc = "Search and Replace (Grug-far)" })
+
+-- Snacks Undo Picker
+vim.keymap.set("n", "<leader>su", function()
+    Snacks.picker.undo()
+end, { desc = "Undo History" })
+
+-- Zen Mode
+vim.keymap.set("n", "<leader>uz", function()
+    Snacks.zen()
+end, { desc = "Toggle Zen Mode" })
+
+-- Inc-Rename (live LSP rename preview)
+vim.keymap.set("n", "<leader>rn", function()
+    return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true, desc = "Incremental Rename" })
