@@ -44,6 +44,7 @@
   "multicursor.nvim": { "branch": "1.0", "commit": "704b99f10a72cc05d370cfeb294ff83412a8ab55" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "nvim-autopairs": { "branch": "master", "commit": "59bce2eef357189c3305e25bc6dd2d138c1683f5" },
+  "nvim-bacon": { "branch": "main", "commit": "76eea518e3a34274be08938f38919840c3d19dcb" },
   "nvim-colorizer.lua": { "branch": "master", "commit": "5cfe7fffbd01e17b3c1e14af85d5febdef88bd8c" },
   "nvim-dap": { "branch": "master", "commit": "45a69eba683a2c448dd9ecfc4de89511f0646b5f" },
   "nvim-hlslens": { "branch": "main", "commit": "be2d7b2be01860b5445a007ff2bc72b29896db6b" },

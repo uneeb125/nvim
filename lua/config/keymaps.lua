@@ -151,6 +151,8 @@ keymap("v", "<leader>wt", "JVgq", { desc = "Toggle wrap selected lines" })
 
 keymap("n", "<leader>e", function() Snacks.explorer() end, { desc = "Explorer" })
 
+keymap("n", "<leader>,", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal" })
+
 -- -- Telescope
 -- keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
 -- keymap("n", "<leader>ft", ":Telescope live_grep<CR>", opts)
