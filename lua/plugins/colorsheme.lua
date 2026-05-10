@@ -16,7 +16,7 @@ return {
             },
             -- If you want Neovim to be transparent and show your terminal wallpaper, leave this true.
             -- If you want the standard Catppuccin Mocha background (#1e1e2e), change this to false.
-            transparent_background = true, 
+            transparent_background = true,
             show_end_of_buffer = false,
             term_colors = true,
             dim_inactive = {

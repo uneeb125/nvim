@@ -17,6 +17,7 @@ return {
         "moyiz/blink-emoji.nvim",
         "ray-x/cmp-sql",
         "micangl/cmp-vimtex",
+        "ribru17/blink-cmp-spell",
     },
 
     -- The configuration for blink.cmp goes directly in the `opts` table.
@@ -36,8 +37,37 @@ return {
         },
 
         completion = {
-            documentation = { auto_show = true },
-            ghost_text = { enabled = false },
+            documentation = {
+                auto_show = true,
+                window = {
+                    border = 'rounded',
+                    direction_priority = {
+                        menu_north = { 'e', 'n', 's' },
+                        menu_south = { 'e', 's', 'n' },
+                    },
+                },
+            },
+            ghost_text = { enabled = true },
+            menu = {
+                border = 'rounded',
+                auto_show_delay_ms = 100,
+                draw = {
+                    treesitter = { 'lsp' },
+                    columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' } },
+                    components = {
+                        kind_icon = {
+                            text = function(ctx)
+                                local icon, _ = require('mini.icons').get('lsp', ctx.kind)
+                                return (icon or ctx.kind_icon) .. ctx.icon_gap
+                            end,
+                            highlight = function(ctx)
+                                local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+                                return hl or ctx.kind_hl
+                            end,
+                        },
+                    },
+                },
+            },
             keyword = { range = "full" },
             trigger = {
                 show_on_trigger_character = true,
@@ -45,10 +75,16 @@ return {
                 show_on_insert_on_trigger_character = true,
             },
         },
-        signature = { enabled = true },
+        signature = { enabled = true, window = { border = 'rounded' } },
 
         sources = {
-            default = { "lsp", "path", "snippets", "buffer", "emoji", "sql", "vimtex" },
+            default = { "lsp", "path", "snippets", "buffer", "emoji", "spell" },
+
+            per_filetype = {
+                sql = { inherit_defaults = true, "sql" },
+                tex = { inherit_defaults = true, "vimtex" },
+                plaintex = { inherit_defaults = true, "vimtex" },
+            },
             providers = {
                 path = {
                     name = "Path",
@@ -101,6 +137,19 @@ return {
                         return vim.tbl_contains({ "sql" }, vim.o.filetype)
                     end,
                 },
+                spell = {
+                    name = "Spell",
+                    module = "blink-cmp-spell",
+                    score_offset = -3,
+                },
+                snippets = {
+                    module = "blink.cmp.sources.snippets",
+                    opts = {
+                        use_show_condition = true,
+                        show_autosnippets = true,
+                        use_label_description = true,
+                    },
+                },
                 vimtex = {
                     name = "vimtex",
                     module = "blink.compat.source",
@@ -113,8 +162,18 @@ return {
             },
         },
 
-        snippets = { preset = "luasnip", score_offset = -5 },
-        fuzzy = { implementation = "prefer_rust_with_warning" },
+        snippets = { preset = "luasnip", score_offset = 1 },
+        fuzzy = {
+            implementation = "prefer_rust_with_warning",
+            sorts = { 'exact', 'score', 'sort_text' },
+        },
+
+        cmdline = {
+            keymap = { preset = "cmdline" },
+            completion = {
+                menu = { auto_show = true },
+            },
+        },
     },
 
     -- The config function is a great place for setup that needs to run
