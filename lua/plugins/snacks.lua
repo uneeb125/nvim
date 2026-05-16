@@ -157,7 +157,13 @@ return {
         picker = {
             enabled = true,
             prompt = " ",
-            sources = {},
+            sources = {
+                explorer = {
+                    layout = {
+                        layout = { min_width = 10, max_width = 35 },
+                    },
+                },
+            },
             focus = "input",
             show_delay = 5000,
             limit_live = 10000,
