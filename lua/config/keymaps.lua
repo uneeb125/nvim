@@ -49,8 +49,8 @@ keymap("n", "<C-k>", "<C-w>k", opts, { desc = "Navigate to  window up" })
 keymap("n", "<C-l>", "<C-w>l", opts, { desc = "Navigate to  window right" })
 
 -- Buffer reorder
-keymap("n", "<C-S-H>", "<cmd>BufferLineMovePrev<cr>", opts)
-keymap("n", "<C-S-L>", "<cmd>BufferLineMoveNext<cr>", opts)
+keymap("n", "<C-S-h>", "<cmd>BufferLineMovePrev<cr>", opts)
+keymap("n", "<C-S-l>", "<cmd>BufferLineMoveNext<cr>", opts)
 
 keymap("n", "<C-q>", "<C-w>q", opts)
 
@@ -97,33 +97,32 @@ keymap("v", "<C-c>", "<cmd>q!<CR>", opts)
 -- Better paste
 keymap("v", "p", "P", opts)
 
-
 -- Copy range
 keymap("v", "<leader>L", function()
-  local file = vim.fn.expand("%")
-  
-  -- Get the start of the visual selection and the current cursor position
-  local start_line = vim.fn.line("v")
-  local end_line = vim.fn.line(".")
+    local file = vim.fn.expand("%")
 
-  -- If the user selected upwards, swap the numbers so start is always smaller
-  if start_line > end_line then
-    start_line, end_line = end_line, start_line
-  end
+    -- Get the start of the visual selection and the current cursor position
+    local start_line = vim.fn.line("v")
+    local end_line = vim.fn.line(".")
 
-  -- Format as "file:start-end" (or just "file:line" if single line)
-  local result
-  if start_line == end_line then
-    result = string.format("%s:%d", file, start_line)
-  else
-    result = string.format("%s:%d-%d", file, start_line, end_line)
-  end
+    -- If the user selected upwards, swap the numbers so start is always smaller
+    if start_line > end_line then
+        start_line, end_line = end_line, start_line
+    end
 
-  vim.fn.setreg("+", result)
-  vim.notify("Copied: " .. result)
-  
-  -- Optional: Exit visual mode after copying
-  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    -- Format as "file:start-end" (or just "file:line" if single line)
+    local result
+    if start_line == end_line then
+        result = string.format("%s:%d", file, start_line)
+    else
+        result = string.format("%s:%d-%d", file, start_line, end_line)
+    end
+
+    vim.fn.setreg("+", result)
+    vim.notify("Copied: " .. result)
+
+    -- Optional: Exit visual mode after copying
+    -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
 end, { desc = "Copy line range reference to clipboard" })
 
 -- Wrap nav
@@ -151,7 +150,9 @@ keymap("v", "<leader>wt", "JVgq", { desc = "Toggle wrap selected lines" })
 
 -- Plugins --
 
-keymap("n", "<leader>e", function() Snacks.explorer() end, { desc = "Explorer" })
+keymap("n", "<leader>e", function()
+    Snacks.explorer()
+end, { desc = "Explorer" })
 
 keymap("n", "<leader>,", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal" })
 
@@ -192,23 +193,32 @@ keymap("n", "<leader>ws", "<cmd>FzfLua lsp_workspace_symbols<CR>", { desc = "LSP
 --     vim.lsp.buf.code_action({ apply = true })
 -- end, { desc = "LSP: Apply First Code Action" })
 
-
 keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code Action Menu" })
 
 keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP: Code Rename" })
-keymap("n", "<leader>di", "<cmd>:lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>", { desc = "LSP: Show inlay" })
+keymap(
+    "n",
+    "<leader>di",
+    "<cmd>:lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>",
+    { desc = "LSP: Show inlay" }
+)
 keymap("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Go to Declaration" })
 keymap("n", "go", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation" })
 
 -- LSP Diagnostics
-keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+-- [d / ]d are defined in lsp.lua with severity filtering
 -- fzf-lua diagnostics
 keymap("n", "<leader>Dl", "<cmd>FzfLua diagnostics_document<CR>", { desc = "List buffer diagnostics (Fzf)" })
 keymap("n", "<leader>Dw", "<cmd>FzfLua diagnostics_workspace<CR>", { desc = "List workspace diagnostics (Fzf)" })
 -- quickfix diagnostics
-keymap("n", "<leader>dl", function() vim.diagnostic.setqflist({ bufnr = 0 }) vim.cmd("copen") end, { desc = "List buffer diagnostics (Quickfix)" })
-keymap("n", "<leader>dw", function() vim.diagnostic.setqflist() vim.cmd("copen") end, { desc = "List workspace diagnostics (Quickfix)" })
+keymap("n", "<leader>dl", function()
+    vim.diagnostic.setqflist({ bufnr = 0 })
+    vim.cmd("copen")
+end, { desc = "List buffer diagnostics (Quickfix)" })
+keymap("n", "<leader>dw", function()
+    vim.diagnostic.setqflist()
+    vim.cmd("copen")
+end, { desc = "List workspace diagnostics (Quickfix)" })
 keymap("n", "<leader>Ds", function()
     local severities = {
         { name = "All (Error, Warn, Info, Hint)", level = vim.diagnostic.severity.HINT },
@@ -218,21 +228,16 @@ keymap("n", "<leader>Ds", function()
     }
     vim.ui.select(severities, {
         prompt = "Select Diagnostic Severity Level",
-        format_item = function(item) return item.name end,
+        format_item = function(item)
+            return item.name
+        end,
     }, function(choice)
-        if choice then
-            local current = vim.diagnostic.config()
-            vim.diagnostic.config(vim.tbl_deep_extend("force", current, {
-                virtual_text = { severity = { min = choice.level } },
-                signs = { severity = { min = choice.level } },
-                underline = { severity = { min = choice.level } },
-                float = { severity = { min = choice.level } },
-            }))
+        if choice and _G.LspControl then
+            _G.LspControl.update_severity(choice.level)
             vim.notify("Diagnostic severity: " .. choice.name)
         end
     end)
 end, { desc = "Set Diagnostic Severity Level" })
-
 
 -- vim.keymap.set("n", "<leader>di", function()
 --     if vim.lsp.inlay_hint.enable == nil then
@@ -249,13 +254,11 @@ vim.keymap.set("n", "<leader>dv", function()
     vim.diagnostic.config({ virtual_text = vim.g.diagnostics_virtual_text_enabled })
 end, { desc = "Toggle Diagnostic Virtual Text" })
 
-
 -- Move like sonic
 keymap("n", "<S-j>", "5j", opts)
 keymap("n", "<S-k>", "5k", opts)
 keymap("v", "<S-j>", "5j", opts)
 keymap("v", "<S-k>", "5k", opts)
-
 
 -- -- Move like super-sonic
 -- keymap("n", "<S-A-j>", "15j", opts)

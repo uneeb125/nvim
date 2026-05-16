@@ -16,6 +16,52 @@ return {
     },
 
     config = function()
+        -- Track the current minimum severity level (default: ERROR)
+        local current_min_severity = vim.diagnostic.severity.ERROR
+
+        -- Icons table — re-passed on every update to prevent Neovim wiping them
+        local diagnostic_icons = {
+            [vim.diagnostic.severity.ERROR] = "󰅚",
+            [vim.diagnostic.severity.WARN] = "󰀪",
+            [vim.diagnostic.severity.INFO] = "󰋽",
+            [vim.diagnostic.severity.HINT] = "󰌶",
+        }
+
+        -- Master function: updates visuals AND stores the current level for jumps
+        local function update_diagnostic_config(level)
+            current_min_severity = level
+            vim.diagnostic.config({
+                severity_sort = true,
+                virtual_text = false,
+                underline = { severity = { min = level } },
+                signs = {
+                    severity = { min = level },
+                    text = diagnostic_icons,
+                },
+                float = {
+                    source = "if_many",
+                    severity = { min = level },
+                },
+            })
+        end
+
+        -- Apply initial config
+        update_diagnostic_config(current_min_severity)
+
+        -- Custom [d / ]d that respect the current severity filter
+        vim.keymap.set("n", "]d", function()
+            vim.diagnostic.jump({ count = 1, float = true, severity = { min = current_min_severity } })
+        end, { desc = "Next Diagnostic (Filtered)" })
+
+        vim.keymap.set("n", "[d", function()
+            vim.diagnostic.jump({ count = -1, float = true, severity = { min = current_min_severity } })
+        end, { desc = "Prev Diagnostic (Filtered)" })
+
+        -- Expose the updater so the keymap file can call it
+        _G.LspControl = {
+            update_severity = update_diagnostic_config,
+        }
+
         -- Define a helper function for creating buffer-local keymaps.
         local map = function(keys, func, desc)
             vim.keymap.set("n", keys, func, { buffer = true, desc = "LSP: " .. desc })
@@ -26,21 +72,6 @@ return {
         local on_attach = function(client, bufnr)
             vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
         end
-
-        -- Configure diagnostic signs and virtual text.
-        vim.diagnostic.config({
-            severity_sort = true,
-            virtual_text = true,
-            float = { source = "if_many" }, -- border is now handled globally by winborder (v0.12)
-            signs = {
-                text = {
-                    [vim.diagnostic.severity.ERROR] = "󰅚",
-                    [vim.diagnostic.severity.WARN] = "󰀪",
-                    [vim.diagnostic.severity.INFO] = "󰋽",
-                    [vim.diagnostic.severity.HINT] = "󰌶",
-                },
-            },
-        })
 
         -- Enable inlay hints by default
         vim.lsp.inlay_hint.enable(true)
