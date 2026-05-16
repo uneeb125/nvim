@@ -47,10 +47,10 @@ return {
                     },
                 },
             },
-            ghost_text = { enabled = true },
+            ghost_text = { enabled = false },
             menu = {
                 border = 'rounded',
-                auto_show_delay_ms = 100,
+                auto_show_delay_ms = 400,
                 draw = {
                     treesitter = { 'lsp' },
                     columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' } },
