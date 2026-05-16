@@ -48,6 +48,9 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
+-- Buffer reorder
+keymap("n", "<C-H>", "<cmd>BufferLineMovePrev<cr>", opts)
+keymap("n", "<C-L>", "<cmd>BufferLineMoveNext<cr>", opts)
 
 keymap("n", "<C-q>", "<C-w>q", opts)
 
