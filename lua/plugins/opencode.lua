@@ -1,4 +1,4 @@
-return {
+local M = {
 	"nickjvandyke/opencode.nvim",
 	version = "*",
 	dependencies = {
@@ -69,3 +69,5 @@ return {
 		vim.keymap.set("t", "<C-l>", "<C-\\><C-n>", { desc = "Terminal to normal mode" })
 	end,
 }
+
+return {}
