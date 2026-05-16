@@ -43,14 +43,14 @@ local opts = { silent = true }
 
 -- Normal --
 -- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
+keymap("n", "<C-h>", "<C-w>h", opts, { desc = "Navigate to  window left" })
+keymap("n", "<C-j>", "<C-w>j", opts, { desc = "Navigate to  window down" })
+keymap("n", "<C-k>", "<C-w>k", opts, { desc = "Navigate to  window up" })
+keymap("n", "<C-l>", "<C-w>l", opts, { desc = "Navigate to  window right" })
 
 -- Buffer reorder
-keymap("n", "<C-H>", "<cmd>BufferLineMovePrev<cr>", opts)
-keymap("n", "<C-L>", "<cmd>BufferLineMoveNext<cr>", opts)
+keymap("n", "<C-S-H>", "<cmd>BufferLineMovePrev<cr>", opts)
+keymap("n", "<C-S-L>", "<cmd>BufferLineMoveNext<cr>", opts)
 
 keymap("n", "<C-q>", "<C-w>q", opts)
 
