@@ -160,7 +160,7 @@ return {
             sources = {
                 explorer = {
                     layout = {
-                        layout = { min_width = 10, max_width = 35 },
+                        layout = { width = 30 },
                     },
                 },
             },
