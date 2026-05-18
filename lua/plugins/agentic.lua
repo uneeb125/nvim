@@ -9,7 +9,7 @@ return {
         folding = {
             tool_calls = {
                 enabled = true,
-                threshold = 0, -- always fold completed tool calls (includes think blocks)
+                threshold = 30, -- fold only when body exceeds 30 lines (keeps short bash outputs visible)
                 fold_on_error = false, -- keep failed tool calls unfolded for inspection
             },
         },
@@ -17,7 +17,7 @@ return {
         tool_calls = {
             title = {
                 max_length = 50,
-                truncate_title_kinds = { "execute", "think", "SubAgent", "fetch", "search" },
+                truncate_title_kinds = { "think", "SubAgent", "fetch", "search" },
             },
         },
     },
@@ -118,6 +118,14 @@ return {
             end,
             mode = { "n", "v", "i" },
             desc = "[O]pen Agentic: [R]estore session",
+        },
+        {
+            "<leader>os", -- os = stop
+            function()
+                require("agentic").stop_generation()
+            end,
+            mode = { "n", "v", "i" },
+            desc = "[O]pen Agentic: [S]top generation",
         },
         {
             "<leader>od", -- od = diagnostics
