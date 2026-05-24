@@ -75,11 +75,13 @@ return {
 
                 -- ── Multiline diagnostics ────────────────────────────
                 multilines = {
-                    enabled = false, -- enable multiline diagnostic messages
-                    always_show = false, -- always show messages on all lines of multiline diagnostics
+                    enabled = true, -- enable multiline diagnostic messages
+                    always_show = true, -- always show diagnostics on all lines
                     trim_whitespaces = false, -- remove leading/trailing whitespace from each line
                     tabstop = 4, -- spaces per tab when expanding tabs
-                    severity = nil, -- filter multiline diagnostics by severity, e.g. { vim.diagnostic.severity.ERROR }
+                    severity = {
+                        vim.diagnostic.severity.ERROR,
+                    },
                 },
 
                 -- Show all diagnostics on the current cursor line, not just those under the cursor
