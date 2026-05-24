@@ -163,7 +163,40 @@ keymap("n", "<leader>,", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal" })
 -- keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 
 -- Git
-keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
+
+-- LazyGit
+keymap("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
+keymap("n", "<leader>gf", "<cmd>LazyGit currentFile<CR>", { desc = "LazyGit Current File" })
+
+-- Fugitive
+keymap("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git Status" })
+keymap("n", "<leader>gc", "<cmd>Git commit<CR>", { desc = "Git Commit" })
+keymap("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Git Blame" })
+
+-- Gitsigns Hunk Operations
+keymap("n", "<leader>ghs", "<cmd>Gitsigns stage_hunk<CR>", { desc = "Stage Hunk" })
+keymap("n", "<leader>ghr", "<cmd>Gitsigns reset_hunk<CR>", { desc = "Restore Hunk" })
+keymap("n", "<leader>ghu", "<cmd>Gitsigns undo_stage_hunk<CR>", { desc = "Undo Stage Hunk" })
+keymap("n", "<leader>ghp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Preview Hunk" })
+keymap("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Preview Hunk" })
+keymap("n", "<leader>ghS", "<cmd>Gitsigns stage_buffer<CR>", { desc = "Stage Buffer" })
+keymap("n", "<leader>ghR", "<cmd>Gitsigns reset_buffer<CR>", { desc = "Reset Buffer" })
+keymap("n", "<leader>ghd", "<cmd>Gitsigns diffthis<CR>", { desc = "Diff This Hunk" })
+keymap("n", "<leader>ghD", "<cmd>Gitsigns diffthis ~<CR>", { desc = "Diff Hunks" })
+keymap("n", "<leader>ght", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Toggle Deleted" })
+keymap("n", "<leader>ghb", "<cmd>Gitsigns blame_line<CR>", { desc = "Blame Line" })
+
+-- Hunk Navigation
+keymap("n", "]h", "<cmd>Gitsigns nav_hunk next<CR>", { desc = "Next Hunk" })
+keymap("n", "[h", "<cmd>Gitsigns nav_hunk prev<CR>", { desc = "Prev Hunk" })
+
+-- Hunk Text Object
+keymap({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select Hunk" })
+
+-- Diffview
+keymap("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Diff Project" })
+keymap("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { desc = "File History" })
+keymap("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>", { desc = "Project History" })
 
 -- Comment
 keymap("n", "<leader>/", "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", opts)
