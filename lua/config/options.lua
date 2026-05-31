@@ -62,7 +62,7 @@ vim.opt.textwidth = 80
 vim.opt.colorcolumn = "80"
 vim.opt.cursorcolumn = true
 
-vim.opt.formatoptions:append("t")
+-- vim.opt.formatoptions:append("t")
 
 -- Use spaces instead of tabs
 vim.opt.expandtab = true
