@@ -50,7 +50,7 @@ return {
             ghost_text = { enabled = false },
             menu = {
                 border = 'rounded',
-                auto_show_delay_ms = 100,
+                auto_show_delay_ms = 0,
                 draw = {
                     treesitter = { 'lsp' },
                     columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' } },
@@ -144,6 +144,7 @@ return {
                 },
                 snippets = {
                     module = "blink.cmp.sources.snippets",
+                    score_offset = -2,
                     opts = {
                         use_show_condition = true,
                         show_autosnippets = true,
@@ -162,7 +163,7 @@ return {
             },
         },
 
-        snippets = { preset = "luasnip", score_offset = 1 },
+        snippets = { preset = "luasnip", score_offset = 0 },
         fuzzy = {
             implementation = "prefer_rust_with_warning",
             sorts = { 'exact', 'score', 'sort_text' },
