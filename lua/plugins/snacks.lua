@@ -306,7 +306,8 @@ return {
                 },
                 list = {
                     keys = {
-                        ["/"] = "toggle_focus",
+                        ["/"] = false,
+                        ["<C-f>"] = "toggle_focus",
                         ["<2-LeftMouse>"] = "confirm",
                         ["<CR>"] = "confirm",
                         ["<Down>"] = "list_down",
