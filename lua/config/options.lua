@@ -2,7 +2,37 @@
 -- GENERAL BEHAVIOR
 -- -----------------------------------------------------------------------------
 vim.opt.shada = { "!", "'1000", "<50", "s10", "h", "f1000" }
-vim.opt.clipboard = "unnamedplus" -- Use system clipboard
+vim.opt.clipboard = "unnamedplus"
+local has_display = vim.env.DISPLAY or vim.env.WAYLAND_DISPLAY
+local function local_copy(selection, lines)
+    if not has_display then return end
+    local data = table.concat(lines, "\n")
+    local cmd
+    if vim.env.WAYLAND_DISPLAY then
+        cmd = selection == "+" and "wl-copy" or "wl-copy --primary"
+    else
+        cmd = selection == "+" and "xclip -selection clipboard" or "xclip -selection primary"
+    end
+    local proc = io.popen(cmd, "w")
+    if proc then proc:write(data); proc:close() end
+end
+vim.g.clipboard = {
+    name = "multi",
+    copy = {
+        ["+"] = function(lines)
+            require("vim.ui.clipboard.osc52").copy("+")(lines)
+            local_copy("+", lines)
+        end,
+        ["*"] = function(lines)
+            require("vim.ui.clipboard.osc52").copy("*")(lines)
+            local_copy("*", lines)
+        end,
+    },
+    paste = {
+        ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+}
 vim.opt.mouse = "a" -- Enable mouse support in all modes
 vim.opt.timeoutlen = 100 -- Time in ms to wait for a mapped sequence
 vim.opt.updatetime = 300 -- Faster completion (default is 4000ms)
