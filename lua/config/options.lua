@@ -16,6 +16,25 @@ local function local_copy(selection, lines)
     local proc = io.popen(cmd, "w")
     if proc then proc:write(data); proc:close() end
 end
+
+local function local_paste(selection)
+    if not has_display then return nil end
+    local cmd
+    if vim.env.WAYLAND_DISPLAY then
+        cmd = selection == "+" and "wl-paste --no-newline" or "wl-paste --no-newline --primary"
+    else
+        cmd = selection == "+" and "xclip -selection clipboard -o" or "xclip -selection primary -o"
+    end
+    local proc = io.popen(cmd, "r")
+    if not proc then return nil end
+    local output = proc:read("*a")
+    proc:close()
+    if output and output ~= "" then
+        return vim.split(output, "\n", { trimempty = true })
+    end
+    return nil
+end
+
 vim.g.clipboard = {
     name = "multi",
     copy = {
@@ -29,8 +48,12 @@ vim.g.clipboard = {
         end,
     },
     paste = {
-        ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-        ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+        ["+"] = function()
+            return local_paste("+") or require("vim.ui.clipboard.osc52").paste("+")()
+        end,
+        ["*"] = function()
+            return local_paste("*") or require("vim.ui.clipboard.osc52").paste("*")()
+        end,
     },
 }
 vim.opt.mouse = "a" -- Enable mouse support in all modes
