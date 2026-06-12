@@ -30,7 +30,7 @@ local function local_paste(selection)
     local output = proc:read("*a")
     proc:close()
     if output and output ~= "" then
-        return vim.split(output, "\n", { trimempty = true })
+        return vim.split(output, "\n")
     end
     return nil
 end
