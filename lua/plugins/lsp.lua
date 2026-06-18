@@ -32,7 +32,7 @@ return {
             current_min_severity = level
             vim.diagnostic.config({
                 severity_sort = true,
-                virtual_text = false,
+                virtual_text = true,
                 underline = { severity = { min = level } },
                 signs = {
                     severity = { min = level },

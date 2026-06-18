@@ -1,4 +1,4 @@
-return {
+local M = {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
     priority = 1000,
@@ -150,3 +150,5 @@ return {
         vim.diagnostic.config({ virtual_text = false })
     end,
 }
+
+return {}
