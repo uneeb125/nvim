@@ -14,6 +14,15 @@ return {
         local history = require("project_nvim.utils.history")
         local project = require("project_nvim.project")
 
+        vim.api.nvim_create_user_command("SetProject", function()
+            local path = vim.fn.input("Set project directory: ", vim.fn.getcwd(), "dir")
+            if path ~= "" then
+                if project.set_pwd(path, "manual") then
+                    vim.notify("Project set to: " .. path)
+                end
+            end
+        end, {})
+
         vim.api.nvim_create_user_command("FzfProjects", function()
             local projects = history.get_recent_projects()
 
@@ -37,6 +46,21 @@ return {
             "<leader>fp",
             "<cmd>FzfProjects<CR>",
             desc = "Find Recent Projects",
+        },
+        {
+            "<leader>ps",
+            "<cmd>SetProject<CR>",
+            desc = "Set Project Directory",
+        },
+        {
+            "<leader>pr",
+            "<cmd>ProjectRoot<CR>",
+            desc = "Toggle Project Root",
+        },
+        {
+            "<leader>pa",
+            "<cmd>lua require('project_nvim.project').set_pwd(vim.fn.getcwd(), 'manual')<CR>",
+            desc = "Add Current Dir as Project",
         },
     },
 }
