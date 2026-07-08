@@ -158,6 +158,7 @@ keymap("n", "<leader>e", function()
     Snacks.explorer({ cwd = root or dir })
 end, { desc = "Explorer" })
 
+keymap("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 keymap("n", "<leader>,", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal" })
 
 -- -- Telescope
