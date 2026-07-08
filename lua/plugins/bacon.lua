@@ -8,6 +8,10 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<leader>rb", function() vim.cmd.BaconList() end, { desc = "Bacon: Toggle Locations" })
+    local Terminal = require("toggleterm.terminal").Terminal
+    local bacon_term = Terminal:new({ cmd = "bacon test", direction = "horizontal", hidden = true })
+    vim.keymap.set("n", "<leader>rb", function()
+      bacon_term:toggle()
+    end, { desc = "Bacon: Toggle Terminal" })
   end,
 }
