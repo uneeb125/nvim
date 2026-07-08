@@ -57,8 +57,9 @@ return {
                     components = {
                         kind_icon = {
                             text = function(ctx)
-                                local icon, _ = require('mini.icons').get('lsp', ctx.kind)
-                                return (icon or ctx.kind_icon) .. ctx.icon_gap
+                                -- local icon, _ = require('mini.icons').get('lsp', ctx.kind)
+                                -- return (icon or ctx.kind_icon) .. ctx.icon_gap
+                                return ctx.kind .. ctx.icon_gap
                             end,
                             highlight = function(ctx)
                                 local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)

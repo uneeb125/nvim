@@ -151,7 +151,11 @@ keymap("v", "<leader>wt", "JVgq", { desc = "Toggle wrap selected lines" })
 -- Plugins --
 
 keymap("n", "<leader>e", function()
-    Snacks.explorer()
+    local bufpath = vim.api.nvim_buf_get_name(0)
+    local dir = bufpath ~= "" and vim.fn.fnamemodify(bufpath, ":h") or vim.fn.getcwd()
+    local root = vim.fs.root(dir, { "Cargo.toml", "pyproject.toml", "go.mod", "Gemfile", "package.json",
+        "project.json", "Makefile", "setup.py", ".git", ".jj", ".hg" })
+    Snacks.explorer({ cwd = root or dir })
 end, { desc = "Explorer" })
 
 keymap("n", "<leader>,", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal" })
