@@ -688,8 +688,6 @@ local M = {
         local disable_snacks = function()
             if vim.api.nvim_buf_line_count(0) > large_file_threshold then
                 vim.b.snacks_dim = false
-                vim.b.snacks_indent = false
-                vim.b.snacks_words = false
                 vim.b.snacks_scope = false
                 if vim.fn.exists(":NoMatchParen") ~= 0 then
                     vim.cmd([[NoMatchParen]])
