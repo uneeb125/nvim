@@ -53,7 +53,7 @@ return {
                 auto_show_delay_ms = 0,
                 draw = {
                     treesitter = { 'lsp' },
-                    columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' } },
+                    columns = {{ 'label', 'label_description', gap = 1 }, { 'source_name' },  { 'kind_icon' } },
                     components = {
                         kind_icon = {
                             text = function(ctx)
@@ -171,7 +171,13 @@ return {
         },
 
         cmdline = {
-            keymap = { preset = "cmdline" },
+            keymap = {
+                preset = "cmdline",
+                ["<Up>"] = { "select_prev", "fallback" },
+                ["<Down>"] = { "select_next", "fallback" },
+                ["<Tab>"] = { "accept", "fallback" },
+                ["<C-e>"] = { "hide", "show" },
+            },
             completion = {
                 menu = { auto_show = true },
             },
