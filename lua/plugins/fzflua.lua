@@ -24,6 +24,7 @@ return {
         { "<leader>fh", "<cmd>FzfLua helptags<CR>", desc = "Find Help" },
         { "<leader>fk", "<cmd>FzfLua keymaps<CR>", desc = "Find Keymaps" },
         { "<leader>fb", "<cmd>FzfLua builtin<CR>", desc = "Find Builtin" },
+        { "<leader>fC", "<cmd>FzfLua commands<CR>", desc = "Find Commands" },
         { "<leader>fw", "<cmd>FzfLua grep_cword<CR>", desc = "Find Word" },
         { "<leader>fW", "<cmd>FzfLua grep_cWORD<CR>", desc = "Find WORD" },
         { "<leader>fd", "<cmd>FzfLua diagnostics_document<CR>", desc = "Find Diagnostics" },
