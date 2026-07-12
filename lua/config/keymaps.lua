@@ -159,6 +159,8 @@ keymap("n", "<leader>e", function()
 end, { desc = "Explorer" })
 
 keymap("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+keymap("n", "<leader>tn", "<cmd>tabnew<CR>", { desc = "New Tab" })
+keymap("n", "<leader>tc", "<cmd>tabclose<CR>", { desc = "Close Tab" })
 keymap("n", "<leader>,", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal" })
 
 -- -- Telescope
