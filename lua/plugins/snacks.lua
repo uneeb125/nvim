@@ -57,7 +57,7 @@ local M = {
         },
         explorer = { enabled = true },
         indent = {
-            enabled = true,
+            enabled = false,
             indent = {
                 priority = 1,
                 enabled = true,
@@ -645,7 +645,7 @@ local M = {
             footer_keys = false,
         },
         words = {
-            enabled = true,
+            enabled = false,
             debounce = 200,
             notify_jump = false,
             notify_end = true,
