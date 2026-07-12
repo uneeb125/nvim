@@ -97,6 +97,7 @@ return {
           },
 
           on_attach = function(client, bufnr)
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           local map = function(modes, keys, func, desc)
             vim.keymap.set(modes, keys, func, { buffer = bufnr, desc = desc, silent = true })
           end
