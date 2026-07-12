@@ -1,4 +1,4 @@
-return {
+local M = {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
@@ -34,20 +34,6 @@ return {
             notify = true,
             size = 1.5 * 1024 * 1024,
             line_length = 2000,
-            setup = function(ctx)
-                if vim.fn.exists(":NoMatchParen") ~= 0 then
-                    vim.cmd([[NoMatchParen]])
-                end
-                Snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
-                vim.b.completion = false
-                vim.b.minianimate_disable = false
-                vim.b.minihipatterns_disable = true
-                vim.schedule(function()
-                    if vim.api.nvim_buf_is_valid(ctx.buf) then
-                        vim.bo[ctx.buf].syntax = ctx.ft
-                    end
-                end)
-            end,
         },
         dashboard = { enabled = true },
         dim = {
@@ -695,4 +681,26 @@ return {
             },
         },
     },
+    config = function(_, opts)
+        require("snacks").setup(opts)
+
+        local large_file_threshold = 2000
+        local disable_snacks = function()
+            if vim.api.nvim_buf_line_count(0) > large_file_threshold then
+                vim.b.snacks_dim = false
+                vim.b.snacks_indent = false
+                vim.b.snacks_words = false
+                vim.b.snacks_scope = false
+                if vim.fn.exists(":NoMatchParen") ~= 0 then
+                    vim.cmd([[NoMatchParen]])
+                end
+            end
+        end
+        vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "FileReadPost" }, {
+            pattern = "*",
+            callback = disable_snacks,
+        })
+    end,
 }
+
+return M
