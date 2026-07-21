@@ -152,6 +152,11 @@ return {
           map("n", "<leader>rc", function() vim.cmd.RustLsp('openCargo') end, "Open Cargo.toml")
           map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
           map({ "n", "v" }, "<leader>j", function() vim.cmd.RustLsp('joinLines') end, "Smart Join Lines")
+          map("n", "<leader>rR", function()
+            vim.fn.system("lspmux reload")
+            vim.cmd.RustAnalyzer("restart")
+            vim.notify("rust-analyzer fully rebooted")
+          end, "Full RA Restart")
         end,
       },
     }
