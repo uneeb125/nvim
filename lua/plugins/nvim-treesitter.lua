@@ -108,6 +108,11 @@ return {
         mv_next("]s", "@statement.outer", "Next statement")
         mv_prev("[s", "@statement.outer", "Prev statement")
 
+        -- Repeat last ]/[ motion with ; and ,
+        local repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
+        vim.keymap.set({ "n", "x", "o" }, ";", repeat_move.repeat_last_move_next)
+        vim.keymap.set({ "n", "x", "o" }, ",", repeat_move.repeat_last_move_previous)
+
         -- Swaps
         local function sw_n(k, query, desc)
             vim.keymap.set("n", k, function()
